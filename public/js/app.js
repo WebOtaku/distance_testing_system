@@ -972,9 +972,12 @@ module.exports = __webpack_require__(38);
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Registration__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Registration___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Registration__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -991,7 +994,9 @@ window.Vue = __webpack_require__(31);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(34));
+
+
+Vue.component('registration', __WEBPACK_IMPORTED_MODULE_0__components_Registration___default.a);
 
 var app = new Vue({
   el: '#app'
@@ -13168,7 +13173,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ExampleComponent.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Registration.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -13177,9 +13182,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0ca92eac", Component.options)
+    hotAPI.createRecord("data-v-56a40330", Component.options)
   } else {
-    hotAPI.reload("data-v-0ca92eac", Component.options)
+    hotAPI.reload("data-v-56a40330", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -13320,10 +13325,95 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
+    data: function data() {
+        return {
+            userStatus: '2',
+            specialities: [],
+            responseStatus: false
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        axios.get('/specialities').then(function (response) {
+            _this.specialities = response.data;
+            _this.responseStatus = true;
+        });
     }
 });
 
@@ -13335,29 +13425,281 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "registration_form" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "form",
+      { staticClass: "form", attrs: { method: "POST", action: "/register" } },
+      [
+        _vm._t("csrf"),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _vm._m(3),
+        _vm._v(" "),
+        _vm._m(4),
+        _vm._v(" "),
+        _vm._m(5),
+        _vm._v(" "),
+        _vm._m(6),
+        _vm._v(" "),
+        _c("div", { staticClass: "form__group" }, [
+          _c("label", { attrs: { for: "status_id" } }, [_vm._v("Статус")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.userStatus,
+                  expression: "userStatus"
+                }
+              ],
+              attrs: {
+                name: "status_id",
+                id: "status_id",
+                "aria-describedby": "userStatus",
+                required: ""
+              },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.userStatus = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "1" } }, [_vm._v("Студент")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "2" } }, [_vm._v("Преподаватель")])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _vm.responseStatus && _vm.userStatus === "1"
+          ? [
+              _c("div", { staticClass: "form__group" }, [
+                _c("label", { attrs: { for: "speciality_id" } }, [
+                  _vm._v("Специальность")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    attrs: {
+                      name: "speciality_id",
+                      id: "speciality_id",
+                      "aria-describedby": "studentSpeciality",
+                      required: ""
+                    }
+                  },
+                  _vm._l(_vm.specialities, function(speciality) {
+                    return _c(
+                      "option",
+                      { domProps: { value: speciality.id } },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(speciality.name + " - " + speciality.code) +
+                            "\n                    "
+                        )
+                      ]
+                    )
+                  })
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(7),
+              _vm._v(" "),
+              _vm._m(8)
+            ]
+          : _vm._e(),
+        _vm._v(" "),
+        _vm._t("errors"),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-submit", attrs: { type: "submit" } },
+          [_vm._v("Зарегистрироваться")]
+        )
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
-        ])
+    return _c("h2", [
+      _vm._v("Зарегистрироваться "),
+      _c("span", { staticClass: "tip" }, [
+        _vm._v("или "),
+        _c("a", { attrs: { href: "/login" } }, [_vm._v("Войти")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "surname" } }, [_vm._v("Фамилия")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "text",
+          name: "surname",
+          id: "surname",
+          "aria-describedby": "userSurname",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "name" } }, [_vm._v("Имя")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "text",
+          name: "name",
+          id: "name",
+          "aria-describedby": "userName",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "patronymic" } }, [_vm._v("Отчество")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "text",
+          name: "patronymic",
+          id: "patronymic",
+          "aria-describedby": "userPatronymic",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "email" } }, [_vm._v("E-mail")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "email",
+          name: "email",
+          id: "email",
+          "aria-describedby": "userEmail",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "password" } }, [_vm._v("Пароль")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "password",
+          name: "password",
+          id: "password",
+          "aria-describedby": "userPassword",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "password_confirmation" } }, [
+        _vm._v("Подтверждение пароля")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "password",
+          name: "password_confirmation",
+          id: "password_confirmation",
+          "aria-describedby": "passwordСonfirmation",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "group" } }, [_vm._v("Группа")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "text",
+          name: "group",
+          id: "group",
+          "aria-describedby": "studentGroup",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form__group" }, [
+      _c("label", { attrs: { for: "course" } }, [_vm._v("Курс")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          type: "number",
+          name: "course",
+          id: "course",
+          "aria-describedby": "studentCourse",
+          min: "1",
+          max: "4",
+          required: ""
+        }
+      })
     ])
   }
 ]
@@ -13366,7 +13708,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0ca92eac", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-56a40330", module.exports)
   }
 }
 
