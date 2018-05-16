@@ -4,12 +4,12 @@
 
         <h2>Зарегистрироваться <span class="tip">или <a href="/login">Войти</a></span></h2>
 
-        <form method="POST" action="/register" class="form">
+        <form method="POST" action="/register" class="form" enctype="multipart/form-data">
 
             <!--CSRF-FIELD-->
             <slot name="csrf"></slot>
 
-            <!--User Form-->
+            <!--UserController Form-->
             <div class="form__group">
                 <label for="surname">Фамилия</label>
                 <input type="text" name="surname" id="surname" aria-describedby="userSurname" required>
@@ -75,6 +75,12 @@
                 </div>
 
             </template>
+
+            <div class="form__group">
+                <label for="avatar">Аватар</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
+                <input type="file" name="avatar" id="avatar" aria-describedby="userAvatar" required>
+            </div>
 
             <!--ERRORS-->
             <slot name="errors"></slot>

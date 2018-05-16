@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Question extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Status extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'test_id', 'question_type_id', 'question'
     ];
 
     /**
@@ -24,8 +24,18 @@ class Status extends Model
         'created_at', 'updated_at'
     ];
 
-    public function users()
+    public function test()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Test::class);
+    }
+
+    public function questionType()
+    {
+        return $this->belongsTo(QuestionType::class);
+    }
+
+    public function answerVariants()
+    {
+        return $this->hasMany(AnswerVariant::class);
     }
 }

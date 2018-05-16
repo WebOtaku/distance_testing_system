@@ -24,8 +24,13 @@ class Speciality extends Model
         'created_at', 'updated_at'
     ];
 
-    public function student()
+    public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function cicle()
+    {
+        return $this->hasOne(Cicle::class);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Hash;
 
 use App\User;
@@ -47,14 +49,7 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        $user_data = [
-            'name' => request('name'),
-            'surname' => request('surname'),
-            'patronymic' => request('patronymic'),
-            'email' => request('email'),
-            'password' => Hash::make(request('password')),
-            'status_id' => request('status_id')
-        ];
+        $user = [];
 
         $user_rules = [
             'name' => 'required|string|min:3|max:255',
@@ -62,7 +57,8 @@ class RegistrationController extends Controller
             'patronymic' => 'required|string|min:3|max:255',
             'email' => 'required|string|email|min:6|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'status_id' => 'required|numeric'
+            'status_id' => 'required|numeric',
+            'avatar' => 'required|image|max:2048'
         ];
 
         $student_rules = [
@@ -71,23 +67,24 @@ class RegistrationController extends Controller
             'course' => 'required|numeric'
         ];
 
-        if (request('status_id') === '1') {
-            $this->validate(request(), $user_rules + $student_rules);
+        if ($request->status_id === '1')
+        {
+            $this->validate($request, $user_rules + $student_rules);
 
-            $user = User::create($user_data);
+            $user = $this->createUser($request);
 
             Student::create([
                 'user_id' => $user->id,
-                'speciality_id' => request('speciality_id'),
-                'group' => request('group'),
-                'course' => request('course')
+                'speciality_id' => $request->speciality_id,
+                'group' => $request->group,
+                'course' => $request->course
             ]);
         }
+        elseif ($request->status_id === '2')
+        {
+            $this->validate($request, $user_rules);
 
-        if (request('status_id') === '2') {
-            $this->validate(request(), $user_rules);
-
-            $user = User::create($user_data);
+            $user = $this->createUser($request);
 
             Teacher::create([
                 'user_id' => $user->id
@@ -97,6 +94,34 @@ class RegistrationController extends Controller
         auth()->login($user);
 
         return redirect()->home();
+    }
+
+    /**
+     * Create a new user from request
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \App\User $user
+     * */
+    private function createUser($request)
+    {
+        $user_data = [
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'status_id' => $request->status_id
+        ];
+
+        $path = $request->file('avatar')->store('public/avatars');
+
+        $path = str_replace('public', '', $path);
+
+        $avatar = ['avatar' => $path];
+
+        $user = User::create($user_data + $avatar);
+
+        return $user;
     }
 
     /**

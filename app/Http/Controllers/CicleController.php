@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Student;
+use App\Cicle;
 use Illuminate\Http\Request;
 
-class StudentController extends Controller
+class CicleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -46,24 +41,21 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Cicle  $cicle
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Cicle $cicle)
     {
-        $user_id = auth()->user()->id;
-
-        return Student::with('speciality')
-            ->where('user_id', $user_id)->get();
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Cicle  $cicle
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit(Cicle $cicle)
     {
         //
     }
@@ -72,10 +64,10 @@ class StudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Student  $student
+     * @param  \App\Cicle  $cicle
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Cicle $cicle)
     {
         //
     }
@@ -83,10 +75,10 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Student  $student
+     * @param  \App\Cicle  $cicle
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(Cicle $cicle)
     {
         //
     }

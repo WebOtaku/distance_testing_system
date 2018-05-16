@@ -11,28 +11,41 @@
 |
 */
 
-/* Root Route */
 
+/* Root Route */
 Route::get('/', 'Controller@index');
+/*--------------------*/
+
 
 /* Register Routes */
-
 Route::get('/register', 'RegistrationController@create');
+
 Route::post('/register', 'RegistrationController@store');
+/*--------------------*/
+
 
 /* Auth Routes */
-
 Route::get('/login', ['as' => 'login', 'uses' => 'SessionController@create']);
+
 Route::post('/login', 'SessionController@store');
 
 // Logout
 Route::get('/logout', 'SessionController@destroy');
+/*--------------------*/
 
-/* Profile Routes */
 
-Route::get('/profile', 'ProfileController@index')->name('home');
+/* Workspace Routes */
+Route::get('/workspace/{vue_capture?}', 'WorkspaceController@index')
+    ->where('vue_capture', '[\/\w\.-]*')->name('home');
+/*--------------------*/
 
-/* Information Routes */
 
+/* Data Routes */
 Route::get('/specialities', 'SpecialityController@index');
 
+Route::get('/user', 'UserController@show');
+
+Route::get('/student', 'StudentController@show');
+
+Route::get('/tests', 'TestController@index');
+/*--------------------*/

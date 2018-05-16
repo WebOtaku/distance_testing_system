@@ -16,7 +16,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'surname', 'patronymic',
-        'email', 'password', 'status_id'
+        'email', 'password', 'status_id',
+        'avatar'
     ];
 
     /**
@@ -25,7 +26,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'email', 'created_at', 'updated_at',
+        'password', 'remember_token'
+    ];
+
+    /**
+     * The attributes that should be guarder from write
+     *
+     * @var array
+     */
+
+    protected $guarded = [
+        'remember_token'
     ];
 
     public function student()

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class QuestionType extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -24,8 +24,8 @@ class Status extends Model
         'created_at', 'updated_at'
     ];
 
-    public function users()
+    public function questions()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Question::class);
     }
 }
