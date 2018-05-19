@@ -1,6 +1,7 @@
 @extends ('layouts.master')
 
 @section ('content')
+
     <registration>
 
         <template slot="csrf">
@@ -12,4 +13,5 @@
         </template>
 
     </registration>
+
 @endsection

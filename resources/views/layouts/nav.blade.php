@@ -4,11 +4,11 @@
 
         <ul>
             <router-link tag="li" to="/workspace/profile/{{ auth()->user()->id }}" exact>
-                <a>Profile</a>
+                <a>Профиль</a>
             </router-link>
 
             <router-link tag="li" to="/workspace/tests" exact>
-                <a>Tests</a>
+                <a>Тесты</a>
             </router-link>
         </ul>
 

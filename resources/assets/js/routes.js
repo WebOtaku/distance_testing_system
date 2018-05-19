@@ -8,6 +8,14 @@ let routes = [
     {
         path: '/workspace/tests',
         component: require('./views/Tests')
+    },
+    {
+        path: '/workspace/tests/create',
+        component: require('./components/Test/Create')
+    },
+    {
+        path: '/workspace/tests/workspace/:testId',
+        component: require('./components/Test/Workspace')
     }
 ];
 
