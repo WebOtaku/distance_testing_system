@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Test;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
 class TestController extends Controller

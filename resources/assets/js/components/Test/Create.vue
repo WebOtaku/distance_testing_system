@@ -4,7 +4,7 @@
 
         <h2>Создание теста</h2>
 
-        <form method="POST" @submit.prevent="createTest" class="form">
+        <form method="POST" class="form">
 
             <!--CSRF-FIELD-->
             <slot name="csrf"></slot>
@@ -39,7 +39,7 @@
             </div>
 
             <!--ERRORS-->
-            <div class="error" v-if="errors">
+            <div class="error" v-if="hasErrors">
                 <ul>
                     <li v-for="error in errors" style="color:red;">
                         {{ error[0] }}
@@ -47,7 +47,11 @@
                 </ul>
             </div>
 
-            <button type="submit" class="btn btn-submit">Cохранить</button>
+            <button type="submit" class="btn btn-submit"
+                    @click.prevent="createTest"
+            >
+                Cохранить
+            </button>
 
             <router-link tag="div" to="/workspace/tests" exact>
                 <a class="link link-back">Назад</a>
@@ -72,24 +76,33 @@
                     number_questions: 1
                 },
                 testId: 0,
-                errors: [],
+                errors: {},
                 testStatus: false,
                 themes: [],
                 themeStatus: false
             }
         },
 
+        computed: {
+            hasErrors() {
+                return Object.keys(this.errors).length !== 0;
+            }
+        },
+
         methods: {
-            createTest() {
-                Test.store(this.test)
-                    .then(response => {
-                        if (response.data.errors) {
-                            this.errors = response.data.errors;
-                        }
-                        else {
-                            this.testId = response.data.test_id;
-                        }
-                    });
+            createTest($event) {
+                $event.target.disabled = true;
+
+                Test.store(this.test, data => {
+                    if (!data.errors) {
+                        this.testId = data.test_id;
+                        document.location.href = `/workspace/tests/edit/${this.testId}`;
+                    }
+                    else {
+                        this.errors = data.errors;
+                        $event.target.disabled = false;
+                    }
+                });
             }
         },
 
@@ -101,7 +114,6 @@
         }
     }
 </script>
-
 
 <!--<div class="form__group">
     <label for="discipline">Дисциплина/МДК</label>

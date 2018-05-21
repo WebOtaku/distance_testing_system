@@ -8,7 +8,7 @@
                 <a>Добавить</a>
             </router-link>
 
-            <router-link tag="div" :to="`/workspace/tests/workspace/${selectedTest}`" exact>
+            <router-link tag="div" :to="`/workspace/tests/edit/${selectedTest}`" exact>
                 <a>Редактировать</a>
             </router-link>
         </div>

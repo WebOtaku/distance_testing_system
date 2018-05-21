@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +41,21 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'test_id' => 'required|numeric',
+            'question_type_id' => 'required|numeric',
+            'question' => 'required|string|min:3'
+        ]);
+
+        if($validation->fails())
+        {
+            return json_encode([
+                'errors' => $validation->errors()->getMessages(),
+                'code' => 422
+            ]);
+        }
+
+        $question = Question::create(compact($request));
     }
 
     /**

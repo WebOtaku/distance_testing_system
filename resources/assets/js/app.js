@@ -1,7 +1,7 @@
 import "./bootstrap";
 import router from "./routes";
 
-import Registration from './components/Registration'
+import Registration from './components/Registration';
 
 Vue.component('registration', Registration);
 

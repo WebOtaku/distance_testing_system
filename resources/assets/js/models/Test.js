@@ -4,8 +4,9 @@ class Test {
             .then(response => then(response.data));
     };
 
-    static store(data) {
-        return axios.post('/tests', data);
+    static store(data, then) {
+        return axios.post('/tests', data)
+            .then(response => then(response.data));
     };
 
     static update(test, value, action) {
