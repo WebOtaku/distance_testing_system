@@ -15,14 +15,14 @@
 Route::get('/', 'Controller@index');
 
 
-/* Register Routes */
+/* START Register Routes */
 Route::get('/register', 'RegistrationController@create');
 
 Route::post('/register', 'RegistrationController@store');
 /* END Register Routes */
 
 
-/* Auth Routes */
+/* START Auth Routes */
 Route::get('/login', ['as' => 'login', 'uses' => 'SessionController@create']);
 
 Route::post('/login', 'SessionController@store');
@@ -31,13 +31,13 @@ Route::get('/logout', 'SessionController@destroy');
 /* END Auth Routes*/
 
 
-/* Workspace Routes */
+/* START Workspace Routes */
 Route::get('/workspace/{vue_capture?}', 'WorkspaceController@index')
     ->where('vue_capture', '[\/\w\.-]*')->name('home');
 /* END Workspace Routes */
 
 
-/* Test Routes */
+/* START Test Routes */
 Route::get('/tests', 'TestController@index');
 
 Route::put('/tests', 'TestController@update');
@@ -48,7 +48,16 @@ Route::delete('/tests', 'TestController@destroy');
 /* END Test Routes*/
 
 
-/* Data Routes */
+/* START Test Routes */
+Route::get('/questions', 'QuestionController@show');
+
+Route::post('/questions', 'QuestionController@store');
+
+Route::delete('/questions', 'QuestionController@destroy');
+/* END Test Routes*/
+
+
+/* START Data Routes */
 Route::get('/specialities', 'SpecialityController@index');
 
 Route::get('/user', 'UserController@show');

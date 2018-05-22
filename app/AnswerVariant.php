@@ -12,7 +12,7 @@ class AnswerVariant extends Model
      * @var array
      */
     protected $fillable = [
-        'question_id', 'answer', 'corrects_answer'
+        'question_id', 'answer', 'correct_answer'
     ];
 
     /**
@@ -26,6 +26,6 @@ class AnswerVariant extends Model
 
     public function question()
     {
-        return $this->belongsTo(Test::class);
+        return $this->belongsTo(Question::class);
     }
 }

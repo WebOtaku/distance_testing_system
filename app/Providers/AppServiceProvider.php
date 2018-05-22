@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Test;
+use App\Question;
+use App\AnswerVariant;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +17,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Test::deleted(function (Test $test) {
+            $test->questions->each(function (Question $question) {
+                $question->delete();
+            });
+        });
+
+        Question::deleted(function ($question) {
+            $question->answerVariants->each(function (AnswerVariant $answerVariant) {
+                $answerVariant->delete();
+            });
+        });
     }
 
     /**

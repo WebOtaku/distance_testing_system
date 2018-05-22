@@ -34,13 +34,11 @@
                      v-if="question.answers.length"
                      v-for="(answer, index) in question.answers"
                 >
-                    <input type="radio" name="correct_answer"
-                           v-if="question.question_type_id === 1"
-                           :id="index" @input="checkRadio(index)">
+                    <input type="radio" name="correct_answer" v-if="question.question_type_id === 1"
+                           @input="checkRadio(index)">
 
-                    <input type="checkbox" name="correct_answer"
-                           v-if="question.question_type_id === 2"
-                           :id="index" v-model="answer.correct_answer">
+                    <input type="checkbox" name="correct_answer" v-if="question.question_type_id === 2"
+                           v-model="answer.correct_answer">
 
                     <input type="text" name="answer" v-model="answer.answer">
 
@@ -105,7 +103,7 @@
 
                 Question.store(this.question, data => {
                     if (!data.errors) {
-                        document.location.href = `/workspace/tests/edit/${this.testId}`;
+                        document.location.href = `/workspace/tests/edit/${this.question.test_id}`;
                     }
                     else {
                         this.errors = data.errors;

@@ -13,7 +13,7 @@
             </router-link>
         </div>
 
-        <table v-if="testStatus">
+        <table v-if="tests.length">
             <tr>
                 <th></th>
                 <th>Тема</th>
@@ -23,12 +23,11 @@
             </tr>
 
             <tr v-for="(test, index) in tests"
-                v-if="index < 6"
+                v-if="index < 10"
             >
                 <td>
-                    <input type="radio" name="test" :id="test.id"
-                           class="test_selector" aria-describedby="testSelect"
-                           v-model="selectedTest" :value="test.id">
+                    <input type="radio" name="test" class="test_selector" :id="`test_${index}`"
+                           aria-describedby="testSelect" v-model="selectedTest" :value="test.id">
                 </td>
 
                 <td v-for="(value, key) in test"
@@ -60,8 +59,7 @@
         data() {
             return {
                 tests: [],
-                testStatus: false,
-                selectedTest: ''
+                selectedTest: 0
             }
         },
 
@@ -94,7 +92,6 @@
         created() {
             Test.fetchAll(tests => {
                 this.tests = tests;
-                this.testStatus = true;
             });
         }
     }

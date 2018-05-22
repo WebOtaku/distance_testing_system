@@ -11,8 +11,7 @@
 
             <div class="form__group">
                 <label for="theme_id">Тема</label>
-                <select name="theme_id" id="theme_id"
-                        aria-describedby="testTheme"
+                <select name="theme_id" id="theme_id" aria-describedby="testTheme"
                         v-model="test.theme_id" required
                 >
                     <option v-for="theme in themes"
@@ -25,16 +24,14 @@
 
             <div class="form__group">
                 <label for="name">Название</label>
-                <input type="text" name="name" id="name"
-                       aria-describedby="testName"
+                <input type="text" name="name" id="name" aria-describedby="testName"
                        v-model="test.name" required>
             </div>
 
             <div class="form__group">
                 <label for="number_questions">Количество вопросов</label>
                 <input type="number" name="number_questions"
-                       id="number_questions" aria-describedby="testName"
-                       min="1" max="99"
+                       id="number_questions" aria-describedby="testName" min="1" max="99"
                        v-model="test.number_questions" required>
             </div>
 
