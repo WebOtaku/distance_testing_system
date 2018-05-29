@@ -12,7 +12,7 @@ class Theme extends Model
      * @var array
      */
     protected $fillable = [
-        'section_id', 'name', 'course'
+       'discipline_teacher_id', 'name', 'course'
     ];
 
     /**
@@ -24,13 +24,13 @@ class Theme extends Model
         'created_at', 'updated_at'
     ];
 
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
-    }
-
     public function tests()
     {
         return $this->hasMany(Test::class);
+    }
+
+    public function disciplineTeacher()
+    {
+        return $this->belongsTo(DisciplineTeacher::class);
     }
 }

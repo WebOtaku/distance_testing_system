@@ -2,6 +2,10 @@ import VueRouter from 'vue-router';
 
 let routes = [
     {
+        path: '/workspace',
+        redirect: '/workspace/tests/'
+    },
+    {
         path: '/workspace/profile/:userId',
         component: require('./views/Profile')
     },

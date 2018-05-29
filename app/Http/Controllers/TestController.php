@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Test;
+use App\ScoreScale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,7 +21,22 @@ class TestController extends Controller
      */
     public function index()
     {
-        return Test::all();
+        $user_status = auth()->user()->status->name;
+
+        if ($user_status === 'Преподаватель') {
+            $offset = request()->pageNumber * request()->pageSize - request()->pageSize;
+            $limit = request()->pageSize;
+            $teacher_id = auth()->user()->teacher->id;
+
+            $tests = Test::offset($offset)
+                ->limit($limit)
+                ->with('theme')
+                ->where('teacher_id', $teacher_id)
+                ->get();
+            $totalRow = count(Test::where('teacher_id', $teacher_id)->get());
+
+            return response()->json(compact(['tests', 'totalRow']));
+        }
     }
 
     /**
@@ -42,9 +58,13 @@ class TestController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
+            'speciality_id' => 'required|numeric',
             'theme_id' => 'required|numeric',
             'name' => 'required|string|min:3|max:255',
-            'number_questions' => 'required|numeric|min:1|max:99'
+            'number_questions' => 'required|numeric|min:1|max:99',
+            'score_scales.*.from' => 'required|numeric|min:1|max:99',
+            'score_scales.*.to' => 'required|numeric|min:1|max:99',
+            'score_scales.*.score' => 'required|numeric|min:1|max:5'
         ]);
 
         if($validation->fails())
@@ -56,12 +76,23 @@ class TestController extends Controller
         }
 
         $test = Test::create([
+            'speciality_id' => $request->speciality_id,
             'theme_id' => $request->theme_id,
+            'teacher_id' => auth()->user()->teacher->id,
             'name' => $request->name,
             'number_questions' => $request->number_questions
         ]);
 
-        return response()->json([ 'test_id' => $test->id ]);
+        foreach ($request->score_scales as $val) {
+            ScoreScale::create([
+                'test_id' => $test->id,
+                'from' => $val['from'],
+                'to' => $val['to'],
+                'score' => $val['score']
+            ]);
+        }
+
+        return response()->json(['test_id' => $test->id]);
     }
 
     /**
@@ -72,7 +103,9 @@ class TestController extends Controller
      */
     public function show(Test $test)
     {
-        //
+        return response(
+            Test::with('theme')->find($test->id)
+        );
     }
 
     /**
@@ -109,6 +142,8 @@ class TestController extends Controller
      */
     public function destroy(Request $request) // Test $test
     {
+        /*TODO прокинут тест через URL*/
+
         $test_id = $request->test;
 
         Test::find($test_id)->delete();

@@ -1,8 +1,17 @@
 class Test {
-    static fetchAll(then) {
-        return axios.get('/tests')
-            .then(response => then(response.data));
+    static fetchAll(pInfo, then) {
+        return axios.get('/tests', {
+            params: {
+                pageNumber: pInfo.pageNumber,
+                pageSize: pInfo.pageSize
+            }
+        }).then(response => then(response.data));
     };
+
+    static fetch(testId, then) {
+        return axios.get(`/tests/${testId}`)
+            .then(response => then(response.data))
+    }
 
     static store(data, then) {
         return axios.post('/tests', data)

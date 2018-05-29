@@ -12,7 +12,7 @@ class Cicle extends Model
      * @var array
      */
     protected $fillable = [
-        'speciality_id', 'name'
+        'name'
     ];
 
     /**
@@ -23,11 +23,6 @@ class Cicle extends Model
     protected $hidden = [
         'created_at', 'updated_at'
     ];
-
-    public function speciality()
-    {
-        return $this->belongsTo(Speciality::class);
-    }
 
     public function disciplines()
     {

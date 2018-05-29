@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateThemesTable extends Migration
+class CreateDisciplineTeachersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateThemesTable extends Migration
      */
     public function up()
     {
-        Schema::create('themes', function (Blueprint $table) {
+        Schema::create('discipline_teachers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('discipline_teacher_id');
-            $table->string('name')->unique();
-            $table->integer('course');
+            $table->integer('teacher_id');
+            $table->integer('discipline_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateThemesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('themes');
+        Schema::dropIfExists('discipline_teachers');
     }
 }

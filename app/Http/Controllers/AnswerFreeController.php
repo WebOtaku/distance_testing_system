@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Section;
+use App\AnswerFree;
 use Illuminate\Http\Request;
 
-class SectionController extends Controller
+class AnswerFreeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class SectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Section  $section
+     * @param  \App\AnswerFree  $answerFree
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show(AnswerFree $answerFree)
     {
         //
     }
@@ -52,10 +52,10 @@ class SectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Section  $section
+     * @param  \App\AnswerFree  $answerFree
      * @return \Illuminate\Http\Response
      */
-    public function edit(Section $section)
+    public function edit(AnswerFree $answerFree)
     {
         //
     }
@@ -64,10 +64,10 @@ class SectionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Section  $section
+     * @param  \App\AnswerFree  $answerFree
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request, AnswerFree $answerFree)
     {
         //
     }
@@ -75,10 +75,10 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Section  $section
+     * @param  \App\AnswerFree  $answerFree
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Section $section)
+    public function destroy(AnswerFree $answerFree)
     {
         //
     }

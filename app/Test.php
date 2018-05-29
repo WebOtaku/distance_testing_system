@@ -12,7 +12,7 @@ class Test extends Model
      * @var array
      */
     protected $fillable = [
-        'theme_id', 'name', 'number_questions',
+        'speciality_id', 'theme_id', 'teacher_id', 'name', 'number_questions',
         'active'
     ];
 
@@ -25,9 +25,19 @@ class Test extends Model
         'created_at', 'updated_at'
     ];
 
+    public function speciality()
+    {
+        return $this->belongsTo(Speciality::class);
+    }
+
     public function theme()
     {
         return $this->belongsTo(Theme::class);
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
     }
 
     public function questions()
@@ -40,8 +50,8 @@ class Test extends Model
         return $this->hasMany(CompletedTest::class);
     }
 
-    public function scoreScale()
+    public function scoreScales()
     {
-        return $this->hasOne(ScoreScale::class);
+        return $this->hasMany(ScoreScale::class);
     }
 }

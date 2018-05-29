@@ -15,10 +15,12 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('speciality_id');
             $table->integer('theme_id');
+            $table->integer('teacher_id');
             $table->string('name');
             $table->integer('number_questions');
-            $table->boolean('active');
+            $table->boolean('active')->default(0);
             $table->timestamps();
         });
     }

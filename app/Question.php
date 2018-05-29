@@ -38,4 +38,9 @@ class Question extends Model
     {
         return $this->hasMany(AnswerVariant::class);
     }
+
+    public function answerFree()
+    {
+        return $this->hasOne(AnswerFree::class);
+    }
 }

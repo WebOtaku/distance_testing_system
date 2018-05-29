@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use App\AnswerVariant;
+use App\AnswerFree;
+use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,47 +44,90 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), [
+
+        /*TODO: Оптимизировать функцию (вынести за скобки не нужное)*/
+
+        $questionRules = [
             'test_id' => 'required|numeric',
             'question_type_id' => 'required|numeric',
             'question' => 'required|string|min:10'
-        ]);
+        ];
 
+        $answerVariantRules = [
+            'answers.*.answer' => 'required|string|min:1'
+        ];
 
-        if($validation->fails())
+        $answerFreeRules = [
+            'answer' => 'required|string|min:1'
+        ];
+
+        if ((int)$request->question_type_id === 3)
         {
-            return json_encode([
-                'errors' => $validation->errors()->getMessages(),
-                'code' => 422
+            $validation = Validator::make(
+                $request->all(),
+                $questionRules + $answerFreeRules
+            );
+
+            if($validation->fails())
+            {
+                return json_encode([
+                    'errors' => $validation->errors()->getMessages(),
+                    'code' => 422
+                ]);
+            }
+
+            $question = Question::create([
+                'test_id' => $request->test_id,
+                'question_type_id' => $request->question_type_id,
+                'question' => $request->question
+            ]);
+
+            AnswerFree::create([
+                'question_id' => $question->id,
+                'answer' => $request->answer
             ]);
         }
+        elseif ((int)$request->question_type_id === 1 ||
+                (int)$request->question_type_id === 2)
+        {
+            $validation = Validator::make(
+                $request->all(),
+                $questionRules + $answerVariantRules
+            );
 
-        $question = Question::create([
-            'test_id' => $request->test_id,
-            'question_type_id' => $request->question_type_id,
-            'question' => $request->question
-        ]);
+            if($validation->fails())
+            {
+                return json_encode([
+                    'errors' => $validation->errors()->getMessages(),
+                    'code' => 422
+                ]);
+            }
 
-        foreach ($request->answers as $val) {
-            AnswerVariant::create([
-                'question_id' => $question->id,
-                'answer' => $val['answer'],
-                'correct_answer' => $val['correct_answer']
+            $question = Question::create([
+                'test_id' => $request->test_id,
+                'question_type_id' => $request->question_type_id,
+                'question' => $request->question
             ]);
+
+            foreach ($request->answers as $val) {
+                AnswerVariant::create([
+                    'question_id' => $question->id,
+                    'answer' => $val['answer'],
+                    'correct_answer' => $val['correct_answer']
+                ]);
+            }
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Question  $question
+     * @param  \App\Test $test
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request) //Question $question
+    public function show(Test $test) //Question $question
     {
-        $test_id = $request->test;
-
-        return Question::where('test_id', $test_id)->with('answerVariants')->get();
+        return Question::where('test_id', $test->id)->with('answerVariants', 'answerFree')->get();
     }
 
     /**

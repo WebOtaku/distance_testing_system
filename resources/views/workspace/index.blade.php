@@ -8,13 +8,7 @@
 
         <section class="section view_section">
 
-            <router-view>
-
-                <template slot="csrf">
-                    {{ csrf_field() }}
-                </template>
-
-            </router-view>
+            <router-view></router-view>
 
         </section>
 

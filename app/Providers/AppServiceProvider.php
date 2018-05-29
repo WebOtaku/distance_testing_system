@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Test;
 use App\Question;
 use App\AnswerVariant;
+use App\ScoreScale;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,12 +22,23 @@ class AppServiceProvider extends ServiceProvider
             $test->questions->each(function (Question $question) {
                 $question->delete();
             });
+
+            $test->scoreScales->each(function (ScoreScale $scoreScale) {
+                $scoreScale->delete();
+            });
         });
 
         Question::deleted(function ($question) {
-            $question->answerVariants->each(function (AnswerVariant $answerVariant) {
-                $answerVariant->delete();
-            });
+            if ($question->question_type_id === 3)
+            {
+                $question->answerFree->delete();
+            }
+            else
+            {
+                $question->answerVariants->each(function (AnswerVariant $answerVariant) {
+                    $answerVariant->delete();
+                });
+            }
         });
     }
 

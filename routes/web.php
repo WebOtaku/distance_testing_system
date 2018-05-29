@@ -1,18 +1,14 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 // Root Route
-Route::get('/', 'Controller@index');
+Route::get('/', function () {
+    if (!auth()->check()) {
+        return view('layouts.index');
+    }
+    else {
+        return redirect('/workspace');
+    }
+});
 
 
 /* START Register Routes */
@@ -40,6 +36,8 @@ Route::get('/workspace/{vue_capture?}', 'WorkspaceController@index')
 /* START Test Routes */
 Route::get('/tests', 'TestController@index');
 
+Route::get('/tests/{test}', 'TestController@show');
+
 Route::put('/tests', 'TestController@update');
 
 Route::post('/tests', 'TestController@store');
@@ -48,13 +46,13 @@ Route::delete('/tests', 'TestController@destroy');
 /* END Test Routes*/
 
 
-/* START Test Routes */
-Route::get('/questions', 'QuestionController@show');
+/* START Question Routes */
+Route::get('/questions/{test}', 'QuestionController@show');
 
 Route::post('/questions', 'QuestionController@store');
 
 Route::delete('/questions', 'QuestionController@destroy');
-/* END Test Routes*/
+/* END Question Routes*/
 
 
 /* START Data Routes */

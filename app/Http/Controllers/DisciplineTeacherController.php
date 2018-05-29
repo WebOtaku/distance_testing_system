@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Theme;
+use App\DisciplineTeacher;
 use Illuminate\Http\Request;
 
-class ThemeController extends Controller
+class DisciplineTeacherController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +14,7 @@ class ThemeController extends Controller
      */
     public function index()
     {
-        return response(Theme::all());
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class ThemeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Theme  $theme
+     * @param  \App\DisciplineTeacher  $disciplineTeacher
      * @return \Illuminate\Http\Response
      */
-    public function show(Theme $theme)
+    public function show(DisciplineTeacher $disciplineTeacher)
     {
         //
     }
@@ -57,10 +52,10 @@ class ThemeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Theme  $theme
+     * @param  \App\DisciplineTeacher  $disciplineTeacher
      * @return \Illuminate\Http\Response
      */
-    public function edit(Theme $theme)
+    public function edit(DisciplineTeacher $disciplineTeacher)
     {
         //
     }
@@ -69,10 +64,10 @@ class ThemeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Theme  $theme
+     * @param  \App\DisciplineTeacher  $disciplineTeacher
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Theme $theme)
+    public function update(Request $request, DisciplineTeacher $disciplineTeacher)
     {
         //
     }
@@ -80,10 +75,10 @@ class ThemeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Theme  $theme
+     * @param  \App\DisciplineTeacher  $disciplineTeacher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Theme $theme)
+    public function destroy(DisciplineTeacher $disciplineTeacher)
     {
         //
     }

@@ -15,7 +15,6 @@ class CreateCiclesTable extends Migration
     {
         Schema::create('cicles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('speciality_id');
             $table->string('name')->unique();
             $table->timestamps();
         });

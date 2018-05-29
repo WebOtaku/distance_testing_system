@@ -67,7 +67,22 @@ class RegistrationController extends Controller
             'course' => 'required|numeric'
         ];
 
-        if ($request->status_id === '1')
+        $teacher_rules = [
+            'speciality' => 'required|string|min:3'
+        ];
+
+        if ((int)$request->status_id === 1)
+        {
+            $this->validate($request, $user_rules + $teacher_rules);
+
+            $user = $this->createUser($request);
+
+            Teacher::create([
+                'user_id' => $user->id,
+                'speciality' => $request->speciality
+            ]);
+        }
+        elseif ((int)$request->status_id === 1)
         {
             $this->validate($request, $user_rules + $student_rules);
 
@@ -78,16 +93,6 @@ class RegistrationController extends Controller
                 'speciality_id' => $request->speciality_id,
                 'group' => $request->group,
                 'course' => $request->course
-            ]);
-        }
-        elseif ($request->status_id === '2')
-        {
-            $this->validate($request, $user_rules);
-
-            $user = $this->createUser($request);
-
-            Teacher::create([
-                'user_id' => $user->id
             ]);
         }
 

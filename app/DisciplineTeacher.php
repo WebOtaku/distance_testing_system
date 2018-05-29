@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Discipline extends Model
+class DisciplineTeacher extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Discipline extends Model
      * @var array
      */
     protected $fillable = [
-        'cicle_id', 'name'
+        'teacher_id', 'discipline_id'
     ];
 
     /**
@@ -24,13 +24,18 @@ class Discipline extends Model
         'created_at', 'updated_at'
     ];
 
-    public function cicle()
+    public function teacher()
     {
-        return $this->belongsTo(Cicle::class);
+        return $this->belongsTo(Teacher::class);
     }
 
-    public function disciplineTeachers()
+    public function discipline()
     {
-        return $this->hasMany(DisciplineTeacher::class);
+        return $this->belongsTo(Discipline::class);
+    }
+
+    public function themes()
+    {
+        return $this->hasMany(Theme::class);
     }
 }

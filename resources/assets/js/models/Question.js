@@ -1,6 +1,6 @@
 class Question {
-    static fetchAll(test, then) {
-        return axios.get('/questions', { params: { test: test } })
+    static fetchAll(testId, then) {
+        return axios.get(`/questions/${testId}`)
             .then(response => then(response.data));
     };
 

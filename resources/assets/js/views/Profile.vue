@@ -22,7 +22,7 @@
 
         </template>
 
-        <template v-if="studentStatus && user.status.id === 1">
+        <template v-if="studentStatus && user.status.id === 2">
 
             <div class="profile__speciality">
                 <p>Специальность: {{ student.speciality.name }}</p>
@@ -51,16 +51,15 @@
             return {
                 user: {},
                 userStatus: false,
-                userId: 0,
                 student: {},
                 studentStatus: false
             }
         },
+
         created() {
             User.fetch(user => {
                 this.user = user;
                 this.userStatus = true;
-                this.userId = this.$route.params.userId;
             });
 
             Student.fetch(student => {

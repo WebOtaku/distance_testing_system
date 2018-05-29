@@ -15,7 +15,7 @@ class CreateScoreScalesTable extends Migration
     {
         Schema::create('score_scales', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('test_id')->unique();
+            $table->integer('test_id');
             $table->integer('from');
             $table->integer('to');
             $table->integer('score');

@@ -4,6 +4,29 @@
 
         <h2>Редактироание теста</h2>
 
+        <div class="test_info" v-if="testFetched">
+
+            <div class="test_info__item">
+                Название: {{ test.name }}
+            </div>
+
+            <div class="test_info__item">
+                Тема: {{ test.theme.name }}
+            </div>
+
+            <div class="test_info__item">
+                Колличество отображаемых вопросов: {{ test.number_questions }}
+            </div>
+
+            <div class="test_info__item">
+                Статус:
+                <button class="btn" @click="changeTestState(test.active, test.id, $event)">
+                    {{ test.active | fromBool }}
+                </button>
+            </div>
+
+        </div>
+
         <section class="questions">
 
             <h3>Вопросы</h3>
@@ -18,8 +41,13 @@
                     {{ index + 1 }}. {{ question.question }}
                 </div>
 
+                <div class="answer_free" v-if="question.answer_free">
+                    Ответ: <span>{{ question.answer_free.answer }}</span>
+                </div>
 
-                <div class="answers" v-if="question.answer_variants.length">
+                <div class="answer_variants" v-else-if="question.answer_variants.length">
+
+                    <span>Ответы:</span>
 
                     <div class="answer"
                          v-for="answer in question.answer_variants"
@@ -55,12 +83,20 @@
 
 <script>
     import Question from '../../models/Question';
+    import Test from '../../models/Test';
 
     export default {
         data() {
             return {
                 testId: this.$route.params.testId,
+                test: {},
                 questions: []
+            }
+        },
+
+        computed: {
+            testFetched() {
+                return Object.keys(this.test).length !== 0;
             }
         },
 
@@ -72,12 +108,31 @@
                         this.questions.splice(index, 1);
                         $event.target.disabled = false;
                     });
+            },
+
+            changeTestState(value, testId, $event) {
+                $event.target.disabled = true;
+                Test.update(testId, !value, 'change_state')
+                    .then(() => {
+                        Vue.set(this.test, 'active', !value);
+                        $event.target.disabled = false;
+                    });
+            },
+        },
+
+        filters: {
+            fromBool(val) {
+                return val ? 'Активен' : 'Не активен';
             }
         },
 
         created() {
             Question.fetchAll(this.testId, questions => {
                 this.questions = questions;
+            });
+
+            Test.fetch(this.testId, test => {
+                this.test = test;
             });
         }
     }

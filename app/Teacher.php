@@ -12,7 +12,7 @@ class Teacher extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id'
+        'user_id', 'speciality'
     ];
 
     /**
@@ -27,5 +27,15 @@ class Teacher extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tests()
+    {
+        return $this->hasMany(Test::class);
+    }
+
+    public function disciplineTeachers()
+    {
+        return $this->hasMany(DisciplineTeacher::class);
     }
 }
