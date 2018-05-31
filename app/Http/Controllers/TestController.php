@@ -30,7 +30,7 @@ class TestController extends Controller
 
             $tests = Test::offset($offset)
                 ->limit($limit)
-                ->with('theme')
+                ->with('theme.disciplineTeacher.discipline.cicle', 'speciality')
                 ->where('teacher_id', $teacher_id)
                 ->get();
             $totalRow = count(Test::where('teacher_id', $teacher_id)->get());
@@ -140,12 +140,8 @@ class TestController extends Controller
      * @param  \App\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request) // Test $test
+    public function destroy(Test $test)
     {
-        /*TODO прокинут тест через URL*/
-
-        $test_id = $request->test;
-
-        Test::find($test_id)->delete();
+        return response()->json(Test::find($test->id)->delete());
     }
 }

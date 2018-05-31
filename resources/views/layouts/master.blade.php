@@ -17,17 +17,25 @@
     </head>
     <body>
 
-        <header class="header">
-            @include ('layouts.header')
-        </header>
+        <section class="section is-paddingless">
 
-        <main id="app">
-            @yield ('content')
-        </main>
+            <div class="container is-fluid">
 
-        <footer class="footer">
-            @include ('layouts.footer')
-        </footer>
+                <header class="header">
+                    @include ('layouts.header')
+                </header>
+
+                <main class="main" id="app">
+                    @yield ('content')
+                </main>
+
+                {{--<footer class="footer">
+                    @include ('layouts.footer')
+                </footer>--}}
+
+            </div>
+
+        </section>
 
         <script src="/js/app.js" async></script>
 

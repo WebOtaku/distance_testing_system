@@ -1,29 +1,28 @@
+<div class="navbar">
 
-<h1>
-    <a href="{{ route('home') }}">Система дистанционного тестирования</a>
-</h1>
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{{ route('home') }}">Система дистанционного тестирования</a>
+    </div>
 
-<div class="auth">
+    <div class="navbar-menu">
 
-    @if(Auth::check())
+        <div class="navbar-end">
+            @if(Auth::check())
 
-        <div class="auth__user">
-            <a href="/workspace/profile/{{ auth()->user()->id }}">
-                {{ Auth::user()->surname }} {{ Auth::user()->name }}
-            </a>
+                <a class="navbar-item"  href="/workspace/profile/{{ auth()->user()->id }}">
+                    {{ Auth::user()->surname }} {{ Auth::user()->name }}
+                </a>
+
+                <a class="navbar-item" href="/logout">Выйти</a>
+
+            @else
+
+                <a class="navbar-item" href="/register">Зарегистрироваться</a>
+                <a class="navbar-item" href="/login">Войти</a>
+
+            @endif
         </div>
 
-        <div class="auth__controls">
-            <a href="/logout">Выйти</a>
-        </div>
-
-    @else
-
-        <div class="auth__controls">
-            <a href="/register">Зарегистрироваться</a>
-            <a href="/login">Войти</a>
-        </div>
-
-    @endif
+    </div>
 
 </div>

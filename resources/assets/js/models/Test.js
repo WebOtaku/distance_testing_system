@@ -26,8 +26,8 @@ class Test {
         });
     };
 
-    static destroy(test) {
-        return axios.delete('/tests', { params: { test: test } });
+    static destroy(testId) {
+        return axios.delete(`/tests/${testId}`);
     };
 }
 

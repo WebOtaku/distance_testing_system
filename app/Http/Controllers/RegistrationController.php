@@ -49,44 +49,28 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        $user = [];
-
-        $user_rules = [
-            'name' => 'required|string|min:3|max:255',
-            'surname' => 'required|string|min:3|max:255',
-            'patronymic' => 'required|string|min:3|max:255',
-            'email' => 'required|string|email|min:6|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'status_id' => 'required|numeric',
-            'avatar' => 'required|image|max:2048'
-        ];
-
-        $student_rules = [
-            'speciality_id' => 'required|numeric',
-            'group' => 'required|string|min:7|max:8',
-            'course' => 'required|numeric'
-        ];
-
-        $teacher_rules = [
-            'speciality' => 'required|string|min:3'
-        ];
-
         if ((int)$request->status_id === 1)
         {
-            $this->validate($request, $user_rules + $teacher_rules);
+            // Пользователь/преподаватель
 
-            $user = $this->createUser($request);
+            $user = $this->createUser($request, [
+                'speciality' => 'required|string|min:3'
+            ]);
 
             Teacher::create([
                 'user_id' => $user->id,
                 'speciality' => $request->speciality
             ]);
         }
-        elseif ((int)$request->status_id === 1)
+        elseif ((int)$request->status_id === 2)
         {
-            $this->validate($request, $user_rules + $student_rules);
+            // Пользователь/студент
 
-            $user = $this->createUser($request);
+            $user = $this->createUser($request, [
+                'speciality_id' => 'required|numeric',
+                'group' => 'required|string|min:7|max:8',
+                'course' => 'required|numeric'
+            ]);
 
             Student::create([
                 'user_id' => $user->id,
@@ -105,10 +89,23 @@ class RegistrationController extends Controller
      * Create a new user from request
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  $bonusRules
      * @return \App\User $user
      * */
-    private function createUser($request)
+    private function createUser($request, $bonusRules)
     {
+        $rules = [
+            'name' => 'required|string|min:3|max:255',
+            'surname' => 'required|string|min:3|max:255',
+            'patronymic' => 'required|string|min:3|max:255',
+            'email' => 'required|string|email|min:6|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'status_id' => 'required|numeric',
+            'avatar' => 'required|image|max:2048'
+        ];
+
+        $this->validate($request, $rules + $bonusRules);
+
         $user_data = [
             'name' => $request->name,
             'surname' => $request->surname,

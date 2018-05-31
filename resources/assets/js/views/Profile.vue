@@ -2,41 +2,47 @@
 
     <div class="profile">
 
-        <h2>Профиль</h2>
+        <section class="section">
 
-        <template v-if="userStatus">
+            <h1 class="title">
+                Профиль
+            </h1>
 
-            <div class="profile__avatar">
-                <img width="180" :src="`/storage${user.avatar}`" alt="аватар">
-            </div>
+            <template v-if="userStatus">
 
-            <div class="profile__full_name">
-                <p class="profile__surname">Фамилия: {{ user.surname }}</p>
-                <p class="profile__name">Имя: {{ user.name }}</p>
-                <p class="profile__patronymic">Отчество: {{ user.patronymic }}</p>
-            </div>
+                <div class="profile__avatar">
+                    <img width="180" :src="`/storage${user.avatar}`" alt="аватар">
+                </div>
 
-            <div class="profile__status">
-                <p>Статус: {{ user.status.name }}</p>
-            </div>
+                <div class="profile__full_name">
+                    <p class="profile__surname">Фамилия: {{ user.surname }}</p>
+                    <p class="profile__name">Имя: {{ user.name }}</p>
+                    <p class="profile__patronymic">Отчество: {{ user.patronymic }}</p>
+                </div>
 
-        </template>
+                <div class="profile__status">
+                    <p>Статус: {{ user.status.name }}</p>
+                </div>
 
-        <template v-if="studentStatus && user.status.id === 2">
+            </template>
 
-            <div class="profile__speciality">
-                <p>Специальность: {{ student.speciality.name }}</p>
-            </div>
+            <template v-if="studentStatus && user.status.id === 2">
 
-            <div class="profile__group">
-                <p>Группа: {{ student.group }}</p>
-            </div>
+                <div class="profile__speciality">
+                    <p>Специальность: {{ student.speciality.name }}</p>
+                </div>
 
-            <div class="profile__course">
-                <p>Курс: {{ student.course }}</p>
-            </div>
+                <div class="profile__group">
+                    <p>Группа: {{ student.group }}</p>
+                </div>
 
-        </template>
+                <div class="profile__course">
+                    <p>Курс: {{ student.course }}</p>
+                </div>
+
+            </template>
+
+        </section>
 
     </div>
 

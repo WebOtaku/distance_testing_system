@@ -6,11 +6,7 @@
 
         @include ('layouts.nav')
 
-        <section class="section view_section">
-
-            <router-view></router-view>
-
-        </section>
+        <router-view></router-view>
 
     </div>
 

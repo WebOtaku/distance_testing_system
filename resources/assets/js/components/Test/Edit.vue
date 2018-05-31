@@ -20,7 +20,7 @@
 
             <div class="test_info__item">
                 Статус:
-                <button class="btn" @click="changeTestState(test.active, test.id, $event)">
+                <button class="button" @click="changeTestState(test.active, test.id, $event)">
                     {{ test.active | fromBool }}
                 </button>
             </div>
@@ -32,7 +32,7 @@
             <h3>Вопросы</h3>
 
             <router-link tag="div" :to="`/workspace/tests/edit/${this.testId}/question`" exact>
-                <a class="link">Добавить вопрос</a>
+                <a class="is-link">Добавить вопрос</a>
             </router-link>
 
             <div class="question" v-for="(question, index) in questions">
@@ -67,7 +67,7 @@
 
                 </div>
 
-                <button class="btn" @click="deleteQuestion(index, question.id, $event)">Удалить</button>
+                <button class="button" @click="deleteQuestion(index, question.id, $event)">Удалить</button>
 
             </div>
 

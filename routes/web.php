@@ -42,7 +42,7 @@ Route::put('/tests', 'TestController@update');
 
 Route::post('/tests', 'TestController@store');
 
-Route::delete('/tests', 'TestController@destroy');
+Route::delete('/tests/{test}', 'TestController@destroy');
 /* END Test Routes*/
 
 
