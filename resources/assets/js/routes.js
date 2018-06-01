@@ -24,6 +24,14 @@ let routes = [
     {
         path: '/workspace/tests/edit/:testId/question',
         component: require('./components/Question')
+    },
+    {
+        path: '/workspace/themes',
+        component: require('./views/Themes')
+    },
+    {
+        path: '/workspace/themes/create',
+        component: require('./components/Theme/Create')
     }
 ];
 

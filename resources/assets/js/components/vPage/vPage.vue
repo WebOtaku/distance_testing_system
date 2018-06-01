@@ -1,6 +1,5 @@
 <template>
 
-    <!--TODO: сделать тесты выпдушками начиная с цикла-->
     <!--TODO: добавить поддержку vuex-->
     <!--TODO: разграничить доступ между студентом и учителем-->
 
@@ -9,20 +8,22 @@
         <ul>
 
             <li class="disabled vPaginationList">
-                <a>{{i18n.pageLength}}
+                <a>{{ i18n.pageLength }}
                     <select @change="switchLength" v-model="pageSize">
-                        <option v-for="len in lengthList">{{len}}</option>
+                        <option v-for="len in lengthList">{{ len }}</option>
                     </select>
                 </a>
             </li>
 
             <li class="disabled bPageInfo">
-                <a>{{
-                    i18n.pageInfo
-                    .replace('#pageNumber#', currentPage)
-                    .replace('#totalPage#', totalPage)
-                    .replace('#totalRow#', totalRow)
-                    }}</a>
+                <a>
+                    {{
+                        i18n.pageInfo
+                        .replace('#pageNumber#', currentPage)
+                        .replace('#totalPage#', totalPage)
+                        .replace('#totalRow#', totalRow)
+                    }}
+                </a>
             </li>
 
             <li :class="{disabled:currentPage === 1,bPageControlButton:true} ">

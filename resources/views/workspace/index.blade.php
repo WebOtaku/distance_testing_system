@@ -4,8 +4,6 @@
 
     <div class="workspace">
 
-        @include ('layouts.nav')
-
         <router-view></router-view>
 
     </div>

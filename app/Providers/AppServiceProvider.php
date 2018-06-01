@@ -8,6 +8,7 @@ use App\Test;
 use App\Question;
 use App\AnswerVariant;
 use App\ScoreScale;
+use App\Theme;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Theme::deleted(function (Theme $theme) {
+            $theme->tests->each(function (Test $test) {
+                $test->delete();
+            });
+        });
+
         Test::deleted(function (Test $test) {
             $test->questions->each(function (Question $question) {
                 $question->delete();

@@ -2,11 +2,11 @@
 
 // Root Route
 Route::get('/', function () {
-    if (!auth()->check()) {
-        return view('layouts.index');
+    if (auth()->check()) {
+        return redirect('/workspace');
     }
     else {
-        return redirect('/workspace');
+        return redirect('/login');
     }
 });
 
@@ -51,16 +51,28 @@ Route::get('/questions/{test}', 'QuestionController@show');
 
 Route::post('/questions', 'QuestionController@store');
 
+/*TODO:передавать ID в URL*/
 Route::delete('/questions', 'QuestionController@destroy');
 /* END Question Routes*/
+
+
+/* START Theme Routes */
+Route::get('/themes', 'ThemeController@index');
+
+Route::post('/themes', 'ThemeController@store');
+
+Route::delete('/themes/{theme}', 'ThemeController@destroy');
+/* END Theme Routes*/
 
 
 /* START Data Routes */
 Route::get('/specialities', 'SpecialityController@index');
 
+Route::get('/cicles', 'CicleController@index');
+
+Route::get('/disciplines/{cicle}', 'DisciplineController@show');
+
 Route::get('/user', 'UserController@show');
 
 Route::get('/student', 'StudentController@show');
-
-Route::get('/themes', 'ThemeController@index');
 /* END Data Routes */

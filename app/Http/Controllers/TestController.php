@@ -21,9 +21,9 @@ class TestController extends Controller
      */
     public function index()
     {
-        $user_status = auth()->user()->status->name;
+        $user_status = auth()->user()->status->id;
 
-        if ($user_status === 'Преподаватель') {
+        if ($user_status === 1) {
             $offset = request()->pageNumber * request()->pageSize - request()->pageSize;
             $limit = request()->pageSize;
             $teacher_id = auth()->user()->teacher->id;
@@ -142,6 +142,8 @@ class TestController extends Controller
      */
     public function destroy(Test $test)
     {
-        return response()->json(Test::find($test->id)->delete());
+        return response()->json(
+            Test::find($test->id)->delete()
+        );
     }
 }

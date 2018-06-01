@@ -1,52 +1,56 @@
 <template>
 
-    <table class="table is-striped">
+    <div class="table-container">
 
-        <thead>
+        <table class="table is-striped">
 
-            <tr>
-                <th></th>
-                <th v-for="key in columns"
-                    @click="sortBy(key)"
-                    :class="{ active: sortKey === key }"
-                >
-                    {{ key | capitalize }}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"></span>
-                </th>
-            </tr>
+            <thead>
 
-        </thead>
+                <tr>
+                    <th></th>
+                    <th v-for="key in columns"
+                        @click="sortBy(key)"
+                        :class="{ active: sortKey === key }"
+                    >
+                        {{ key | capitalize }}
+                        <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"></span>
+                    </th>
+                </tr>
 
-        <tbody>
+            </thead>
 
-            <tr v-for="(entry, index) in filteredData">
+            <tbody>
 
-                <td>
-                    <input type="radio" name="elem" :id="`elem_${index}`" aria-describedby="elemSelect"
-                           @input.prevent="radioCheck(entry['id'])" :value="index" v-model="selectedElem"
-                           v-if="index === 0" checked>
+                <tr v-for="(entry, index) in filteredData" @click="">
 
-                    <input type="radio" name="elem" :id="`elem_${index}`" aria-describedby="elemSelect"
-                           @input.prevent="radioCheck(entry['id'])" :value="index" v-model="selectedElem" v-else>
-                </td>
+                    <td>
+                        <input type="radio" name="elem" :id="`elem_${index}`" aria-describedby="elemSelect"
+                               @input.prevent="radioCheck(entry['id'])" :value="index" v-model="selectedElem"
+                               v-if="index === 0" checked>
 
-                <td v-for="key in columns">
+                        <input type="radio" name="elem" :id="`elem_${index}`" aria-describedby="elemSelect"
+                               @input.prevent="radioCheck(entry['id'])" :value="index" v-model="selectedElem" v-else>
+                    </td>
 
-                    <template v-if="key === 'активный?'">
-                        {{ entry[key] | fromBool }}
-                    </template>
-                    
-                    <template v-else>
-                        {{ entry[key] }}
-                    </template>
+                    <td v-for="key in columns">
 
-                </td>
+                        <template v-if="key === 'активный?'">
+                            {{ entry[key] | fromBool }}
+                        </template>
 
-            </tr>
+                        <template v-else>
+                            {{ entry[key] }}
+                        </template>
 
-        </tbody>
+                    </td>
 
-    </table>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </template>
 

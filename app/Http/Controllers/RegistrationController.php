@@ -69,7 +69,7 @@ class RegistrationController extends Controller
             $user = $this->createUser($request, [
                 'speciality_id' => 'required|numeric',
                 'group' => 'required|string|min:7|max:8',
-                'course' => 'required|numeric'
+                'course' => 'required|numeric|min:1|max:4'
             ]);
 
             Student::create([

@@ -11515,3 +11515,44 @@ label.panel-block:hover {
   padding: 3rem 1.5rem 6rem;
 }
 
+.navbar .navbar-menu .navbar-item a {
+  color: #fff;
+}
+
+.navbar .navbar-menu .navbar-dropdown a {
+  color: #373737;
+}
+
+.navbar .navbar-menu .navbar-dropdown a.is-active a {
+  color: #fff;
+}
+
+.navbar .navbar-brand .navbar-burger {
+  color: #fff;
+}
+
+.navbar div#navbar-menu-id.is-active a {
+  color: #000;
+}
+
+.navbar div#navbar-menu-id.is-active a:hover {
+  color: #0e301a;
+}
+
+.field .control .input,
+.field .control select {
+  min-width: 200px;
+  width: 300px;
+  max-width: 400px;
+}
+
+.field .control .input[type=number] {
+  min-width: 20px;
+  width: 80px;
+  max-width: 100px;
+}
+
+.errors {
+  margin-bottom: 0.9em;
+}
+

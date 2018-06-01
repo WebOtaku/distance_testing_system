@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" class="has-navbar-fixed-top">
     <head>
 
         <meta charset="utf-8">
@@ -21,17 +21,11 @@
 
             <div class="container is-fluid">
 
-                <header class="header">
-                    @include ('layouts.header')
-                </header>
-
                 <main class="main" id="app">
+                    @include ('layouts.header')
+
                     @yield ('content')
                 </main>
-
-                {{--<footer class="footer">
-                    @include ('layouts.footer')
-                </footer>--}}
 
             </div>
 

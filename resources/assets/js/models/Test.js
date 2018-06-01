@@ -18,9 +18,9 @@ class Test {
             .then(response => then(response.data));
     };
 
-    static update(test, value, action) {
+    static update(testId, value, action) {
         return axios.put('/tests', {
-            test: test,
+            test: testId,
             value: value,
             action: action
         });

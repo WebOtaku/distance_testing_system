@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class CicleController extends Controller
 {
+    /*Прокинуть через Auth и тему тоже*/
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,9 @@ class CicleController extends Controller
      */
     public function index()
     {
-        //
+        return response(
+            Cicle::all()
+        );
     }
 
     /**

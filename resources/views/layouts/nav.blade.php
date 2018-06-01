@@ -1,19 +1,39 @@
-<nav class="navbar">
+<div class="navbar-start">
 
-    {{--TODO: Объдинить навигация в навбаре и в хедере--}}
+    <router-link class="navbar-item" to="/workspace/profile/{{ auth()->user()->id }}" exact>
+        <a>Профиль</a>
+    </router-link>
 
-    <div class="navbar-menu">
+    <div class="navbar-item has-dropdown is-hoverable">
 
-        <ul class="navbar-start">
-            <router-link tag="li" to="/workspace/profile/{{ auth()->user()->id }}" exact>
-                <a class="navbar-item">Профиль</a>
+        <router-link class="navbar-link" to="/workspace/tests" exact>
+            Тесты
+        </router-link>
+
+        <div class="navbar-dropdown is-rounded">
+
+            <router-link class="navbar-item is-inline-block" to="/workspace/tests/create" exact>
+                Добавить тест
             </router-link>
 
-            <router-link tag="li" to="/workspace/tests" exact>
-                <a class="navbar-item">Тесты</a>
-            </router-link>
-        </ul>
+        </div>
 
     </div>
 
-</nav>
+    <div class="navbar-item has-dropdown is-hoverable">
+
+        <router-link class="navbar-link" to="/workspace/themes" exact>
+            Темы
+        </router-link>
+
+        <div class="navbar-dropdown is-rounded">
+
+            <router-link class="navbar-item is-inline-block" to="/workspace/themes/create" exact>
+                Добавить тему
+            </router-link>
+
+        </div>
+
+    </div>
+
+</div>

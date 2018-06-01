@@ -20,7 +20,7 @@
                 <div class="field">
                     <label class="label">Искать в таблице</label>
                     <div class="control">
-                        <input style="width: 300px" class="input" name="query" v-model="searchQuery" type="text">
+                        <input class="input" name="query" v-model="searchQuery" type="text">
                     </div>
                 </div>
 
@@ -52,7 +52,6 @@
 
             <table-grid
                     :data="gridData"
-                    :tests="tests"
                     :columns="gridColumns"
                     :filter-key="searchQuery"
                     @radioCheck="radioCheck"
@@ -75,7 +74,7 @@
                 pageSet: {
                     totalRow: 0,
                     language: 'ru',
-                    pageSizeMenu: [5, 10, 15],
+                    pageSizeMenu: [10, 15, 20],
                     align: 'left'
                 },
                 searchQuery: '',
@@ -158,12 +157,6 @@
                         'активный?': x.active
                     });
                 })
-            }
-        },
-
-        filters: {
-            fromBool(val) {
-                return val ? 'Активен' : 'Не активен';
             }
         }
     }

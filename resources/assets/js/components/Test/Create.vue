@@ -1,6 +1,6 @@
 <template>
 
-    <div class="create_test">
+    <div class="create_test columns">
 
         <h2>Создание теста</h2>
 
@@ -53,7 +53,7 @@
 
             <fieldset class="score_scales">
 
-                <legend>Разбаловка</legend>
+                <legend>Разбалловка</legend>
 
                 <div class="form__group score_scale"
                      v-for="(score_scale, index) in test.score_scales"
@@ -163,10 +163,3 @@
         }
     }
 </script>
-
-
-<!--<div class="form__group">
-    <label for="discipline">Дисциплина/МДК</label>
-    <input type="text" name="discipline" id="discipline"
-           aria-describedby="testDiscipline" required>
-</div>-->

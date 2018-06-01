@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Discipline;
+use App\Cicle;
 use Illuminate\Http\Request;
 
 class DisciplineController extends Controller
@@ -41,12 +42,14 @@ class DisciplineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Discipline  $discipline
+     * @param  \App\Cicle  $cicle
      * @return \Illuminate\Http\Response
      */
-    public function show(Discipline $discipline)
+    public function show(Cicle $cicle)
     {
-        //
+        return response(
+            Discipline::where('cicle_id', $cicle->id)->get()
+        );
     }
 
     /**
