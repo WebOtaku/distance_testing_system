@@ -1,6 +1,6 @@
 <template>
 
-    <div class="table-container">
+    <div class="table-container" v-if="filteredData.length">
 
         <table class="table is-striped">
 

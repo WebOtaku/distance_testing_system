@@ -44,69 +44,70 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        if ((int)$request->question_type_id === 3)
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1)
         {
-            // Вопрос со свободным ответом
+            if ((int)$request->question_type_id === 3)
+            {
+                $validation = Validator::make($request->all(), [
+                    'test_id' => 'required|numeric',
+                    'question_type_id' => 'required|numeric',
+                    'question' => 'required|string|min:10',
+                    'answer' => 'required|string|min:1'
+                ]);
 
-            $question = $this->createQuestion($request, [
-                'answer' => 'required|string|min:1'
-            ]);
+                if($validation->fails())
+                {
+                    return json_encode([
+                        'errors' => $validation->errors()->getMessages(),
+                        'code' => 422
+                    ]);
+                }
 
-            AnswerFree::create([
-                'question_id' => $question->id,
-                'answer' => $request->answer
-            ]);
-        }
-        else
-        {
-            // Вопрос со строгим ответом или с несколькими вариантами ответа
+                $question = Question::create([
+                    'test_id' => $request->test_id,
+                    'question_type_id' => $request->question_type_id,
+                    'question' => $request->question
+                ]);
 
-            $question = $this->createQuestion($request, [
-                'answers.*.answer' => 'required|string|min:1'
-            ]);
-
-            foreach ($request->answers as $val) {
-                AnswerVariant::create([
+                AnswerFree::create([
                     'question_id' => $question->id,
-                    'answer' => $val['answer'],
-                    'correct_answer' => $val['correct_answer']
+                    'answer' => $request->answer
                 ]);
             }
+            else
+            {
+                $validation = Validator::make($request->all(), [
+                    'test_id' => 'required|numeric',
+                    'question_type_id' => 'required|numeric',
+                    'question' => 'required|string|min:10',
+                    'answers.*.answer' => 'required|string|min:1'
+                ]);
+
+                if($validation->fails())
+                {
+                    return json_encode([
+                        'errors' => $validation->errors()->getMessages(),
+                        'code' => 422
+                    ]);
+                }
+
+                $question = Question::create([
+                    'test_id' => $request->test_id,
+                    'question_type_id' => $request->question_type_id,
+                    'question' => $request->question
+                ]);
+
+                foreach ($request->answers as $val) {
+                    AnswerVariant::create([
+                        'question_id' => $question->id,
+                        'answer' => $val['answer'],
+                        'correct_answer' => $val['correct_answer']
+                    ]);
+                }
+            }
         }
-    }
-
-    /**
-     * Create a new question from request
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  $bonusRules
-     * @return \App\Question  $question
-     */
-    private function createQuestion($request, $bonusRules)
-    {
-        $rules = [
-            'test_id' => 'required|numeric',
-            'question_type_id' => 'required|numeric',
-            'question' => 'required|string|min:10'
-        ];
-
-        $validation = Validator::make($request->all(), $rules + $bonusRules);
-
-        if($validation->fails())
-        {
-            return json_encode([
-                'errors' => $validation->errors()->getMessages(),
-                'code' => 422
-            ]);
-        }
-
-        $question = Question::create([
-            'test_id' => $request->test_id,
-            'question_type_id' => $request->question_type_id,
-            'question' => $request->question
-        ]);
-
-        return $question;
     }
 
     /**
@@ -115,9 +116,15 @@ class QuestionController extends Controller
      * @param  \App\Test $test
      * @return \Illuminate\Http\Response
      */
-    public function show(Test $test) //Question $question
+    public function show(Test $test)
     {
-        return Question::where('test_id', $test->id)->with('answerVariants', 'answerFree')->get();
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1)
+        {
+            return Question::where('test_id', $test->id)
+                ->with('answerVariants', 'answerFree')->get();
+        }
     }
 
     /**
@@ -149,10 +156,10 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request) //Question $question
+    public function destroy(Question $question)
     {
-        $question_id = $request->question;
-
-        Question::find($question_id)->delete();
+        return response()->json(
+            Question::find($question->id)->delete()
+        );
     }
 }

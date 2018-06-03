@@ -2,122 +2,296 @@
 
     <div class="edit_test">
 
-        <h2>Редактироание теста</h2>
+        <section class="section">
 
-        <div class="test_info" v-if="testFetched">
+            <h1 class="title">Редактироание теста</h1>
 
-            <div class="test_info__item">
-                Название: {{ test.name }}
+            <div class="notification is-primary" ref="notify" v-if="!hasErrors">
+                <button class="delete" @click="closeNotify"></button>
+                Тест был успешно обновлён
             </div>
 
-            <div class="test_info__item">
-                Тема: {{ test.theme.name }}
+            <div class="content" v-if="testFetched">
+
+                <form method="POST" class="form">
+
+                    <h4>Основная информация:</h4>
+
+                    <div class="field">
+                        <label class="label" for="speciality_id">Специальность</label>
+
+                        <div class="select">
+                            <select name="speciality_id" id="speciality_id" aria-describedby="testSpeciality"
+                                    v-model="test.speciality_id" required
+                            >
+                                <option v-for="speciality in specialities"
+                                        :value="speciality.id"
+                                >
+                                    {{ speciality.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="theme_id">Тема</label>
+
+                        <div class="select">
+                            <select name="theme_id" id="theme_id" aria-describedby="testTheme"
+                                    v-model="test.theme_id" required
+                            >
+                                <option v-for="theme in themes"
+                                        :value="theme.id"
+                                >
+                                    {{ theme.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="name">Название</label>
+
+                        <div class="control">
+                            <input type="text" class="input" name="name" id="name" aria-describedby="testName"
+                                   v-model="test.name" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="number_questions">Количество вопросов</label>
+
+                        <div class="control">
+                            <input type="number" class="input" name="number_questions" id="number_questions"
+                                   aria-describedby="testName" min="1" max="99"
+                                   v-model="test.number_questions" required>
+                        </div>
+                    </div>
+
+                    <h4 class="subtitle">Разбаловка:</h4>
+
+                    <div class="field is-grouped score-scales">
+
+                        <div class="field"
+                             v-for="(score_scale, index) in test.score_scales"
+                        >
+
+                            <label class="label" :for="`score-scale-${index}`">
+                                {{ score_scale.score }} :
+                            </label>
+
+                            <div class="control">
+                                от <input type="number" class="input" :id="`score-scale-${index}`"
+                                          min="1" max="99" aria-describedby="scaleFrom"
+                                          v-model="score_scale.from">
+                            </div>
+
+                            <div class="control">
+                                до <input type="number" class="input"
+                                          min="1" max="99" aria-describedby="scaleTo"
+                                          v-model="score_scale.to">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="field">
+
+                        <label class="label" for="status">Статус</label>
+                        <div class="control">
+                            <button class="button is-primary is-outlined" id="status"
+                                    @click="changeTestState(test.active, test.id, $event)"
+                            >
+                                {{ test.active | fromBool }}
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!--ERRORS-->
+                    <errors :errors="errors"></errors>
+
+                </form>
+
             </div>
 
-            <div class="test_info__item">
-                Колличество отображаемых вопросов: {{ test.number_questions }}
-            </div>
+            <div class="content">
 
-            <div class="test_info__item">
-                Статус:
-                <button class="button" @click="changeTestState(test.active, test.id, $event)">
-                    {{ test.active | fromBool }}
-                </button>
-            </div>
+                <h4>Вопросы:</h4>
 
-        </div>
-
-        <section class="questions">
-
-            <h3>Вопросы</h3>
-
-            <router-link tag="div" :to="`/workspace/tests/edit/${this.testId}/question`" exact>
-                <a class="is-link">Добавить вопрос</a>
-            </router-link>
-
-            <div class="question" v-for="(question, index) in questions">
-
-                <div class="question__body">
-                    {{ index + 1 }}. {{ question.question }}
+                <div class="field">
+                    <div class="control">
+                        <router-link class="button is-link is-outlined"
+                             :to="`/workspace/tests/edit/${this.testId}/question`" exact
+                        >
+                            Добавить вопрос
+                        </router-link>
+                    </div>
                 </div>
 
-                <div class="answer_free" v-if="question.answer_free">
-                    Ответ: <span>{{ question.answer_free.answer }}</span>
-                </div>
+                <div class="content" v-for="(question, index) in questions">
 
-                <div class="answer_variants" v-else-if="question.answer_variants.length">
+                    <p>{{ index + 1 }}. {{ question.question }}</p>
 
-                    <span>Ответы:</span>
+                    <template v-if="question.answer_free">
+                        <h6>Ответ: <span style="font-weight: normal;">
+                            {{ question.answer_free.answer }}</span>
+                        </h6>
 
-                    <div class="answer"
-                         v-for="answer in question.answer_variants"
-                    >
+                    </template>
 
-                        <input type="radio" :name="`correct_answer_${index}`"
-                               v-if="question.question_type_id === 1"
-                               :checked="answer.correct_answer" disabled>
+                    <div class="content" v-else-if="question.answer_variants.length">
 
-                        <input type="checkbox" :name="`correct_answer_${index}`"
-                                v-if="question.question_type_id === 2"
-                               :checked="answer.correct_answer" disabled>
+                        <h6>Ответы:</h6>
 
-                        <span>{{ answer.answer }}</span>
+                        <div v-for="answer in question.answer_variants">
 
+                            <input type="radio" :name="`correct_answer_${index}`"
+                                   v-if="question.question_type_id === 1"
+                                   :checked="answer.correct_answer" disabled>
+
+                            <input type="checkbox" :name="`correct_answer_${index}`"
+                                    v-if="question.question_type_id === 2"
+                                   :checked="answer.correct_answer" disabled>
+
+                            <span>{{ answer.answer }}</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-danger is-outlined"
+                                    @click="deleteQuestion(index, question.id, $event)"
+                            >
+                                Удалить
+                            </button>
+                        </div>
                     </div>
 
                 </div>
 
-                <button class="button" @click="deleteQuestion(index, question.id, $event)">Удалить</button>
+            </div>
 
+            <div class="field is-grouped">
+                <div class="control">
+                    <button type="submit" class="button is-primary is-outlined" @click.prevent="updateTest">
+                        Cохранить
+                    </button>
+                </div>
+
+                <div class="control">
+                    <router-link class="button is-link is-outlined" to="/workspace/tests" exact>
+                        Назад
+                    </router-link>
+                </div>
             </div>
 
         </section>
-
-        <router-link tag="div" to="/workspace/tests" exact>
-            <a class="link link-back">Назад</a>
-        </router-link>
 
     </div>
 
 </template>
 
 <script>
-    import Question from '../../models/Question';
     import Test from '../../models/Test';
+    import Theme from '../../models/Theme';
+    import Speciality from '../../models/Speciality';
+    import Question from '../../models/Question';
 
     export default {
         data() {
             return {
                 testId: this.$route.params.testId,
                 test: {},
-                questions: []
+                questions: [],
+                errors: {},
+                themes: [],
+                specialities: []
             }
         },
 
         computed: {
             testFetched() {
                 return Object.keys(this.test).length !== 0;
+            },
+
+            hasErrors() {
+                return Object.keys(this.errors).length !== 0;
             }
         },
 
         methods: {
             deleteQuestion(index, questionId, $event) {
                 $event.target.disabled = true;
-                Question.destroy(questionId)
-                    .then(() => {
-                        this.questions.splice(index, 1);
-                        $event.target.disabled = false;
-                    });
+                Question.destroy(questionId, () => {
+                    this.questions.splice(index, 1);
+                    $event.target.disabled = false;
+                });
             },
 
             changeTestState(value, testId, $event) {
                 $event.target.disabled = true;
-                Test.update(testId, !value, 'change_state')
-                    .then(() => {
-                        Vue.set(this.test, 'active', !value);
-                        $event.target.disabled = false;
-                    });
+                $event.target.classList.add('is-loading');
+
+                Test.update(!value, testId, 'change_state', () => {
+                    Vue.set(this.test, 'active', !value);
+                    $event.target.disabled = false;
+                    $event.target.classList.remove('is-loading');
+                });
             },
+
+            updateTest($event) {
+                $event.target.disabled = true;
+                $event.target.classList.add('is-loading');
+
+                Test.update(this.test, this.test.id, 'update_test', data => {
+                    if (!data.errors) {
+                        $event.target.disabled = false;
+                        $event.target.classList.remove('is-loading');
+                        this.$refs.notify.classList.add('is-active');
+                        setTimeout(() => {
+                            this.$refs.notify.classList.remove('is-active');
+                        }, 5000)
+                    }
+                    else {
+                        this.errors = data.errors;
+                        $event.target.disabled = false;
+                        $event.target.classList.remove('is-loading');
+                        window.scrollTo(0, 0)
+                    }
+                });
+            },
+
+            fetchThemes() {
+                Theme.fetchAll(themes => {
+                    this.themes = themes;
+                });
+            },
+
+            fetchSpecialities() {
+                Speciality.fetchAll(specialities => {
+                    this.specialities = specialities;
+                });
+            },
+
+            fetchQuestions() {
+                Question.fetchAll(this.testId, questions => {
+                    this.questions = questions;
+                });
+            },
+
+            fetchTest() {
+                Test.fetch(this.testId, test => {
+                    this.test = test;
+                });
+            },
+
+            closeNotify() {
+                this.$refs.notify.classList.remove('is-active');
+            }
         },
 
         filters: {
@@ -127,13 +301,22 @@
         },
 
         created() {
-            Question.fetchAll(this.testId, questions => {
-                this.questions = questions;
-            });
-
-            Test.fetch(this.testId, test => {
-                this.test = test;
-            });
+            this.fetchSpecialities();
+            this.fetchThemes();
+            this.fetchTest();
+            this.fetchQuestions();
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .notification {
+        min-width: 200px;
+        width: 300px;
+        max-width: 400px;
+        display: none;
+    }
+    .notification.is-active {
+        display: block;
+    }
+</style>

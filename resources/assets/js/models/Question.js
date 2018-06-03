@@ -9,8 +9,9 @@ class Question {
             .then(response => then(response.data));
     };
 
-    static destroy(question) {
-        return axios.delete('/questions', { params: { question: question } });
+    static destroy(questionId, then) {
+        return axios.delete(`/questions/${questionId}`)
+            .then(response => then(response.data));
     };
 }
 

@@ -8,39 +8,57 @@
                 Профиль
             </h1>
 
-            <template v-if="userStatus">
+            <div class="content">
 
-                <div class="profile__avatar">
-                    <img width="180" :src="`/storage${user.avatar}`" alt="аватар">
-                </div>
+                <template v-if="hasUser">
 
-                <div class="profile__full_name">
-                    <p class="profile__surname">Фамилия: {{ user.surname }}</p>
-                    <p class="profile__name">Имя: {{ user.name }}</p>
-                    <p class="profile__patronymic">Отчество: {{ user.patronymic }}</p>
-                </div>
+                    <div class="profile-avatar">
+                        <img :src="`/storage${user.avatar}`" alt="аватар">
+                    </div>
 
-                <div class="profile__status">
-                    <p>Статус: {{ user.status.name }}</p>
-                </div>
+                    <ul class="profile-info">
+                        <li>
+                            <span class="has-text-primary">ФИО:</span>
+                            {{ user.surname }} {{ user.name }} {{ user.patronymic }}
+                        </li>
 
-            </template>
+                        <li>
+                            <span class="has-text-primary">Статус:</span>
+                            {{ user.status.name }}
+                        </li>
 
-            <template v-if="studentStatus && user.status.id === 2">
+                        <template v-if="hasStudent">
 
-                <div class="profile__speciality">
-                    <p>Специальность: {{ student.speciality.name }}</p>
-                </div>
+                            <li>
+                                <span class="has-text-primary">Специальность:</span>
+                                {{ student.speciality.name }}
+                            </li>
 
-                <div class="profile__group">
-                    <p>Группа: {{ student.group }}</p>
-                </div>
+                            <li>
+                                <span class="has-text-primary">Группа:</span>
+                                {{ student.group }}
+                            </li>
 
-                <div class="profile__course">
-                    <p>Курс: {{ student.course }}</p>
-                </div>
+                            <li>
+                                <span class="has-text-primary">Курс:</span>
+                                {{ student.course }}
+                            </li>
 
-            </template>
+                        </template>
+
+                        <template v-if="hasTeacher">
+
+                            <li><span class="has-text-primary">Квалификация/Специальность:</span>
+                                {{ teacher.speciality }}</li>
+
+                        </template>
+                    </ul>
+
+                </template>
+
+
+
+            </div>
 
         </section>
 
@@ -51,27 +69,79 @@
 <script>
     import User from '../models/User';
     import Student from '../models/Student';
+    import Teacher from '../models/Teacher';
 
     export default {
         data() {
             return {
                 user: {},
-                userStatus: false,
                 student: {},
-                studentStatus: false
+                teacher: {}
+            }
+        },
+
+        computed: {
+            hasUser() {
+                return Object.keys(this.user).length !== 0;
+            },
+
+            hasStudent() {
+                return Object.keys(this.student).length !== 0;
+            },
+
+            hasTeacher() {
+                return Object.keys(this.teacher).length !== 0;
+            }
+        },
+
+        methods: {
+            fetchUser() {
+                User.fetch(user => {
+                    this.user = user;
+
+                    if (user.status.id === 1) {
+                        this.fetchTeacher();
+                    }
+                    else if (user.status.id === 2) {
+                        this.fetchStudent();
+                    }
+                });
+            },
+
+            fetchStudent() {
+                Student.fetch(this.user.id, student => {
+                    this.student = student;
+                });
+            },
+
+            fetchTeacher() {
+                Teacher.fetch(this.user.id, teacher => {
+                    this.teacher = teacher;
+                });
             }
         },
 
         created() {
-            User.fetch(user => {
-                this.user = user;
-                this.userStatus = true;
-            });
-
-            Student.fetch(student => {
-                this.student = student;
-                this.studentStatus = true;
-            });
+            this.fetchUser();
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .profile .profile-avatar {
+        float: left;
+        min-width: 100px;
+        max-width: 160px;
+    }
+
+    .profile .profile-avatar img {
+        border-radius: 20px;
+        border-width: 4px;
+    }
+
+    .profile .profile-info {
+        float: left;
+        min-width: 100px;
+        max-width: 450px;
+    }
+</style>

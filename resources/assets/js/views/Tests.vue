@@ -8,23 +8,23 @@
                 Тесты
             </h1>
 
-            <!-- pagination bar -->
-            <!-- v-bind 'setting' data to config page bar -->
-            <!-- bind event 'page-change' to receive page info change -->
-            <v-page :setting="pageSet"
-                    @page-change="pageChange"
-            ></v-page>
+            <template v-if="tests.length">
 
-            <form id="search" class="is-inline-block">
+                <form id="search" class="is-inline-block">
 
-                <div class="field">
-                    <label class="label">Искать в таблице</label>
-                    <div class="control">
-                        <input class="input" name="query" v-model="searchQuery" type="text">
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <input class="input" name="query" v-model="searchQuery" type="text"
+                                   placeholder="Искать...">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-            </form>
+                </form>
+
+            </template>
 
             <div class="is-inline-block">
 
@@ -32,30 +32,46 @@
                     <a class="button is-link is-outlined">Добавить</a>
                 </router-link>
 
-                <router-link tag="div" class="is-inline-block" :to="`/workspace/tests/edit/${selectedTest}`" exact>
-                    <a class="button is-link is-outlined">Редактировать</a>
-                </router-link>
+                <template v-if="tests.length">
 
-                <button class="button is-primary is-outlined"
-                        @click="changeTestState($event)"
-                >
-                    Изменить статус
-                </button>
+                    <router-link tag="div" class="is-inline-block" :to="`/workspace/tests/edit/${selectedTest}`" exact>
+                        <a class="button is-link is-outlined">Редактировать</a>
+                    </router-link>
 
-                <button class="button is-danger is-outlined"
-                        @click="deleteTest($event)"
-                >
-                    Удалить
-                </button>
+                    <button class="button is-primary is-outlined"
+                            @click="changeTestState($event)"
+                    >
+                        Изменить статус
+                    </button>
+
+                    <button class="button is-danger is-outlined"
+                            @click="deleteTest($event)"
+                    >
+                        Удалить
+                    </button>
+
+                </template>
 
             </div>
 
             <table-grid
+                    v-if="tests.length"
                     :data="gridData"
                     :columns="gridColumns"
                     :filter-key="searchQuery"
                     @radioCheck="radioCheck"
             ></table-grid>
+
+            <section class="section" v-else>
+                <p class="is-">Список тестов пуст</p>
+            </section>
+
+            <!-- pagination bar -->
+            <!-- v-bind 'setting' data to config page bar -->
+            <!-- bind event 'page-change' to receive page info change -->
+            <v-page :setting="pageSet"
+                    @page-change="pageChange"
+            ></v-page>
 
         </section>
 

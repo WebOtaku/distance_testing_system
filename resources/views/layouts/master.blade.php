@@ -13,6 +13,7 @@
 
         {{-- CSS --}}
         <link rel="stylesheet" href="/css/app.css">
+        <script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js" async></script>
 
     </head>
     <body>

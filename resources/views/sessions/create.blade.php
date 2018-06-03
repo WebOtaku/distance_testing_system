@@ -4,27 +4,41 @@
 
     <div class="authorization_form">
 
-        <h2>Войти <span class="tip">или <a href="/register">Зарегистрироваться</a></span></h2>
+        <section class="section">
 
-        <form method="POST" action="/login" class="form">
+            <h1 class="title">Регистрация</h1>
 
-            {{ csrf_field() }}
+            <h2 class="subtitle">Войти или <a href="/register">Зарегистрироваться</a></h2>
 
-            <div class="form__group">
-                <label for="email">E-mail</label>
-                <input type="email" name="email" id="email" aria-describedby="userEmail" required>
-            </div>
+            <form method="POST" action="/login" class="form">
 
-            <div class="form__group">
-                <label for="password">Пароль</label>
-                <input type="password" name="password" id="password" aria-describedby="userPassword" required>
-            </div>
+                {{ csrf_field() }}
 
-            @include ('layouts.errors')
+                <div class="field">
+                    <label class="label" for="email">E-mail</label>
 
-            <button type="submit" class="btn btn-submit">Войти</button>
+                    <div class="control">
+                        <input type="email" class="input" name="email" id="email"
+                               aria-describedby="userEmail" required>
+                    </div>
+                </div>
 
-        </form>
+                <div class="field">
+                    <label class="label" for="password">Пароль</label>
+
+                    <div class="control">
+                        <input type="password" class="input" name="password" id="password"
+                               aria-describedby="userPassword" required>
+                    </div>
+                </div>
+
+                @include ('layouts.errors')
+
+                <button type="submit" class="button is-primary">Войти</button>
+
+            </form>
+
+        </section>
 
     </div>
 

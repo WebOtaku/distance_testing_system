@@ -38,7 +38,7 @@ Route::get('/tests', 'TestController@index');
 
 Route::get('/tests/{test}', 'TestController@show');
 
-Route::put('/tests', 'TestController@update');
+Route::put('/tests/{test}', 'TestController@update');
 
 Route::post('/tests', 'TestController@store');
 
@@ -51,13 +51,16 @@ Route::get('/questions/{test}', 'QuestionController@show');
 
 Route::post('/questions', 'QuestionController@store');
 
-/*TODO:передавать ID в URL*/
-Route::delete('/questions', 'QuestionController@destroy');
+Route::delete('/questions/{question}', 'QuestionController@destroy');
 /* END Question Routes*/
 
 
 /* START Theme Routes */
 Route::get('/themes', 'ThemeController@index');
+
+Route::get('/themes/{theme}', 'ThemeController@show');
+
+Route::put('/themes/{theme}', 'ThemeController@update');
 
 Route::post('/themes', 'ThemeController@store');
 
@@ -72,7 +75,9 @@ Route::get('/cicles', 'CicleController@index');
 
 Route::get('/disciplines/{cicle}', 'DisciplineController@show');
 
-Route::get('/user', 'UserController@show');
+Route::get('/users', 'UserController@show');
 
-Route::get('/student', 'StudentController@show');
+Route::get('/students/{user}', 'StudentController@show');
+
+Route::get('/teachers/{user}', 'TeacherController@show');
 /* END Data Routes */

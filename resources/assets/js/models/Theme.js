@@ -13,6 +13,16 @@ class Theme {
         }).then(response => then(response.data));
     };
 
+    static fetch(themId, then) {
+        return axios.get(`/themes/${themId}`)
+            .then(response => then(response.data));
+    };
+
+    static update(data, themeId, then) {
+        return axios.put(`/themes/${themeId}`, data)
+            .then(response => then(response.data));
+    };
+
     static store(data, then) {
         return axios.post('/themes', data)
             .then(response => then(response.data));

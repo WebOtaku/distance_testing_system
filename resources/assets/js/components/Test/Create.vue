@@ -1,98 +1,122 @@
 <template>
 
-    <div class="create_test columns">
+    <div class="create_test">
 
-        <h2>Создание теста</h2>
+        <section class="section">
 
-        <form method="POST" class="form">
+            <h2 class="title">Создание теста</h2>
 
-            <fieldset class="basic_information">
+            <form method="POST" class="form">
 
-                <legend>Основная информация</legend>
+                <h2 class="subtitle">Основная информация:</h2>
 
-                <div class="form__group">
-                    <label for="speciality_id">Специальность</label>
-                    <select name="speciality_id" id="speciality_id" aria-describedby="testSpeciality"
-                            v-model="test.speciality_id" required
-                    >
-                        <option v-for="speciality in specialities"
-                                :value="speciality.id"
+                <div class="field">
+                    <label class="label" for="speciality_id">Специальность</label>
+
+                    <div class="select">
+                        <select name="speciality_id" id="speciality_id" aria-describedby="testSpeciality"
+                                v-model="test.speciality_id" required
                         >
-                            {{ speciality.name }}
-                        </option>
-                    </select>
+                            <option v-for="speciality in specialities"
+                                    :value="speciality.id"
+                            >
+                                {{ speciality.name }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="theme_id">Тема</label>
-                    <select name="theme_id" id="theme_id" aria-describedby="testTheme"
-                            v-model="test.theme_id" required
-                    >
-                        <option v-for="theme in themes"
-                                :value="theme.id"
+                <div class="field">
+                    <label class="label" for="theme_id">Тема</label>
+
+                    <div class="select">
+                        <select name="theme_id" id="theme_id" aria-describedby="testTheme"
+                                v-model="test.theme_id" required
                         >
-                            {{ theme.name }}
-                        </option>
-                    </select>
+                            <option v-for="theme in themes"
+                                    :value="theme.id"
+                            >
+                                {{ theme.name }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="name">Название</label>
-                    <input type="text" name="name" id="name" aria-describedby="testName"
-                           v-model="test.name" required>
+                <div class="field">
+                    <label class="label" for="name">Название</label>
+
+                    <div class="control">
+                        <input type="text" class="input" name="name" id="name" aria-describedby="testName"
+                               v-model="test.name" required>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="number_questions">Количество вопросов</label>
-                    <input type="number" name="number_questions" id="number_questions"
-                           aria-describedby="testName" min="1" max="99"
-                           v-model="test.number_questions" required>
+                <div class="field">
+                    <label class="label" for="number_questions">Количество вопросов</label>
+
+                    <div class="control">
+                        <input type="number" class="input" name="number_questions" id="number_questions"
+                               aria-describedby="testName" min="1" max="99"
+                               v-model="test.number_questions" required>
+                    </div>
                 </div>
 
-            </fieldset>
+                <h2 class="subtitle">Разбаловка:</h2>
 
-            <fieldset class="score_scales">
+                <div class="field is-grouped score-scales">
 
-                <legend>Разбалловка</legend>
+                    <div class="field"
+                         v-for="(score_scale, index) in test.score_scales"
+                    >
 
-                <div class="form__group score_scale"
-                     v-for="(score_scale, index) in test.score_scales"
-                >
+                        <label class="label" :for="`score-scale-${index}`">
+                            {{ score_scale.score }} :
+                        </label>
 
-                    <span v-html="score_scale.score" aria-describedby="score"></span> :
+                        <div class="control">
+                            от <input type="number" class="input" :id="`score-scale-${index}`"
+                                      min="1" max="99" aria-describedby="scaleFrom"
+                                      v-model="score_scale.from">
+                        </div>
 
-                    от <input type="number" :name="`score_scale_from_${index}`"
-                              min="1" max="99" aria-describedby="scaleFrom"
-                              v-model="score_scale.from">
+                        <div class="control">
+                            до <input type="number" class="input"
+                                      min="1" max="99" aria-describedby="scaleTo"
+                                      v-model="score_scale.to">
+                        </div>
 
-                    до <input type="number" :name="`score_scale_to_${index}`"
-                              min="1" max="99" aria-describedby="scaleTo"
-                              v-model="score_scale.to">
+                    </div>
 
                 </div>
 
-            </fieldset>
+                <!--ERRORS-->
+                <errors :errors="errors"></errors>
 
-            <!--ERRORS-->
-            <errors :errors="errors"></errors>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" class="button is-primary" @click.prevent="createTest">
+                            Создать
+                        </button>
+                    </div>
 
-            <button type="submit" class="btn btn-submit" @click.prevent="createTest">
-                Cохранить
-            </button>
+                    <div class="control">
+                        <router-link class="button is-link" to="/workspace/tests" exact>
+                            Назад
+                        </router-link>
+                    </div>
+                </div>
 
-            <router-link tag="div" to="/workspace/tests" exact>
-                <a class="link link-back">Назад</a>
-            </router-link>
+            </form>
 
-        </form>
+        </section>
 
     </div>
 
 </template>
 
 <script>
-    import Theme from '../../models/Theme';
     import Test from '../../models/Test';
+    import Theme from '../../models/Theme';
     import Speciality from '../../models/Speciality';
 
     export default {
@@ -147,19 +171,26 @@
                         $event.target.disabled = false;
                     }
                 });
+            },
+
+            fetchThemes() {
+                Theme.fetchAll(themes => {
+                    this.themes = themes;
+                    this.test.theme_id = themes[0].id;
+                });
+            },
+
+            fetchSpecialities() {
+                Speciality.fetchAll(specialities => {
+                    this.specialities = specialities;
+                    this.test.speciality_id = specialities[0].id;
+                });
             }
         },
 
         created() {
-            Theme.fetchAll(themes => {
-                this.themes = themes;
-                this.test.theme_id = themes[0].id;
-            });
-
-            Speciality.fetchAll(specialities => {
-                this.specialities = specialities;
-                this.test.speciality_id = specialities[0].id;
-            });
+            this.fetchThemes();
+            this.fetchSpecialities();
         }
     }
 </script>

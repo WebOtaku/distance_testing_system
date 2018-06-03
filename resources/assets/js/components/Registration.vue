@@ -2,124 +2,167 @@
 
     <div class="registration_form">
 
-        <h2>Зарегистрироваться <span class="tip">или <a href="/login">Войти</a></span></h2>
+        <section class="section">
 
-        <form method="POST" action="/register" class="form" enctype="multipart/form-data">
+            <h1 class="title">Регистрация</h1>
 
-            <!--CSRF-FIELD-->
-            <slot name="csrf"></slot>
+            <h2 class="subtitle">Зарегистрироваться или <a href="/login">Войти</a></h2>
 
-            <!--UserController Form-->
-            <div class="form__group">
-                <label for="status_id">Статус</label>
-                <select name="status_id" id="status_id"
-                        aria-describedby="userStatus" v-model="userStatus" required>
-                    <option :value="1">Преподаватель</option>
-                    <option :value="2">Студент</option>
-                </select>
-            </div>
+            <form method="POST" action="/register" class="form" enctype="multipart/form-data">
 
-            <fieldset>
+                <!--CSRF-FIELD-->
+                <slot name="csrf"></slot>
 
-                <legend>Основная информация</legend>
+                <!--UserController Form-->
+                <div class="field">
+                    <label class="label" for="status_id">Статус</label>
 
-                <div class="form__group">
-                    <label for="surname">Фамилия</label>
-                    <input type="text" name="surname" id="surname"
-                           aria-describedby="userSurname" required>
+                    <div class="select">
+                        <select name="status_id" id="status_id"
+                                aria-describedby="userStatus" v-model="userStatus" required>
+                            <option :value="1">Преподаватель</option>
+                            <option :value="2">Студент</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="name">Имя</label>
-                    <input type="text" name="name" id="name"
-                           aria-describedby="userName" required>
+                <div class="field">
+                    <label class="label" for="surname">Фамилия</label>
+
+                    <div class="control">
+                        <input type="text" name="surname" class="input" id="surname"
+                               aria-describedby="userSurname" required>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="patronymic">Отчество</label>
-                    <input type="text" name="patronymic" id="patronymic"
-                           aria-describedby="userPatronymic" required>
+                <div class="field">
+                    <label class="label" for="name">Имя</label>
+
+                    <div class="control">
+                        <input type="text" name="name" class="input" id="name"
+                               aria-describedby="userName" required>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email"
-                           aria-describedby="userEmail" required>
+                <div class="field">
+                    <label class="label" for="patronymic">Отчество</label>
+
+                    <div class="control">
+                        <input type="text" name="patronymic" class="input" id="patronymic"
+                               aria-describedby="userPatronymic" required>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="password">Пароль</label>
-                    <input type="password" name="password" id="password"
-                           aria-describedby="userPassword" required>
+                <div class="field">
+                    <label class="label" for="email">E-mail</label>
+
+                    <div class="control">
+                        <input type="email" name="email" class="input" id="email"
+                               aria-describedby="userEmail" required>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="password_confirmation">Подтверждение пароля</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation"
-                           aria-describedby="passwordСonfirmation" required>
+                <div class="field">
+                    <label class="label" for="password">Пароль</label>
+
+                    <div class="control">
+                        <input type="password" name="password" class="input" id="password"
+                               aria-describedby="userPassword" required>
+                    </div>
                 </div>
 
-            </fieldset>
+                <div class="field">
+                    <label class="label" for="password_confirmation">Подтверждение пароля</label>
 
-            <!--Teacher Form-->
-            <fieldset v-if="userStatus === 1">
-
-                <legend>Информация о преподавателе</legend>
-
-                <div class="form__group">
-                    <label for="speciality">Квалификация/специальность</label>
-                    <textarea name="speciality" id="speciality" cols="30" rows="6"
-                           aria-describedby="teacherSpeciality" required></textarea>
+                    <div class="control">
+                        <input type="password" name="password_confirmation" class="input"
+                               id="password_confirmation" aria-describedby="passwordСonfirmation" required>
+                    </div>
                 </div>
 
-            </fieldset>
+                <!--Teacher Form-->
+                <template v-if="userStatus === 1">
+
+                    <div class="field">
+                        <label class="label" for="speciality">Квалификация/специальность</label>
+
+                        <div class="control">
+                            <textarea name="speciality" class="textarea" id="speciality" rows="4"
+                                      aria-describedby="teacherSpeciality" required></textarea>
+                        </div>
+                    </div>
+
+                </template>
 
 
-            <!--Student Form-->
-            <fieldset v-if="specialities.length && userStatus === 2">
+                <!--Student Form-->
+                <template v-if="specialities.length && userStatus === 2">
 
-                <legend>Информация о студенте</legend>
+                    <div class="field">
+                        <label class="label" for="speciality_id">Специальность</label>
 
-                <div class="form__group">
-                    <label for="speciality_id">Специальность</label>
-                    <select name="speciality_id" id="speciality_id"
-                            aria-describedby="studentSpeciality" required>
-                        <option v-for="speciality in specialities"
-                                :value="speciality.id"
-                        >
-                            {{ speciality.code + ' - ' + speciality.name }}
-                        </option>
-                    </select>
+                        <div class="select">
+                            <select name="speciality_id" id="speciality_id"
+                                    aria-describedby="studentSpeciality" required>
+                                <option v-for="speciality in specialities"
+                                        :value="speciality.id"
+                                >
+                                    {{ speciality.code + ' - ' + speciality.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="group">Группа</label>
+
+                        <div class="control">
+                            <input type="text" name="group" class="input" id="group"
+                                   aria-describedby="studentGroup" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="course">Курс</label>
+
+                        <div class="control">
+                            <input type="number" name="course" class="input" id="course"
+                                   aria-describedby="studentCourse" min="1" max="4" value="1" required>
+                        </div>
+                    </div>
+
+                </template>
+
+
+                <div class="field">
+                    <label class="label" for="avatar">Аватар</label>
+
+                    <div class="file">
+                        <label class="file-label">
+                            <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
+                            <input type="file" class="file-input" name="avatar" id="avatar"
+                                   aria-describedby="userAvatar" required>
+                            <span class="file-cta">
+                                <span class="file-icon">
+                                    <i class="fas fa-upload"></i>
+                                </span>
+
+                                <span class="file-label">
+                                    Выберите файл...
+                                </span>
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
-                <div class="form__group">
-                    <label for="group">Группа</label>
-                    <input type="text" name="group" id="group"
-                           aria-describedby="studentGroup" required>
-                </div>
+                <!--ERRORS-->
+                <slot name="errors"></slot>
 
-                <div class="form__group">
-                    <label for="course">Курс</label>
-                    <input type="number" name="course" id="course"
-                           aria-describedby="studentCourse"
-                           min="1" max="4" value="1" required>
-                </div>
+                <button type="submit" class="button is-primary">Зарегистрироваться</button>
 
-            </fieldset>
+            </form>
 
-            <div class="form__group">
-                <label for="avatar">Аватар</label>
-                <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
-                <input type="file" name="avatar" id="avatar"
-                       aria-describedby="userAvatar" required>
-            </div>
-
-            <!--ERRORS-->
-            <slot name="errors"></slot>
-
-            <button type="submit" class="btn btn-submit">Зарегистрироваться</button>
-
-        </form>
+        </section>
 
     </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Student;
+use App\User;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -46,15 +47,15 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Student  $student
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(User $user)
     {
-        $user_id = auth()->user()->id;
-
-        return Student::with('speciality')
-            ->where('user_id', $user_id)->get();
+        return response(
+            Student::with('speciality')
+                ->where('user_id', $user->id)->first()
+        );
     }
 
     /**

@@ -1,8 +1,8 @@
-class Student {
+class Teacher {
     static fetch(userId, then) {
-        return axios.get(`/students/${userId}`)
+        return axios.get(`/teachers/${userId}`)
             .then(response => then(response.data));
     }
 }
 
-export default Student;
+export default Teacher;

@@ -29,18 +29,29 @@
 }
 
 .field .control .input,
-.field .control select {
-    min-width: 200px;
+.field .control textarea.textarea,
+.field .select select {
+    min-width: 231px;
     width: 300px;
     max-width: 400px;
 }
 
 .field .control .input[type = number] {
     min-width: 20px;
-    width: 80px;
-    max-width: 100px;
+    width: 60px;
+    max-width: 80px;
 }
 
 .errors {
     margin-bottom: 0.9em;
+}
+
+.score-scales {
+    min-width: 231px;
+    width: 320px;
+    max-width: 400px;
+}
+
+.content h4 {
+    font-weight: normal;
 }

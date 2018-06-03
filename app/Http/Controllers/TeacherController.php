@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Teacher;
+use App\User;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -41,12 +42,14 @@ class TeacherController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Teacher  $teacher
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Teacher $teacher)
+    public function show(User $user)
     {
-        //
+        return response(
+            Teacher::where('user_id', $user->id)->first()
+        );
     }
 
     /**

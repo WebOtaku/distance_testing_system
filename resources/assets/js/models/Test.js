@@ -18,12 +18,9 @@ class Test {
             .then(response => then(response.data));
     };
 
-    static update(testId, value, action) {
-        return axios.put('/tests', {
-            test: testId,
-            value: value,
-            action: action
-        });
+    static update(data, testId, action, then) {
+        return axios.put(`/tests/${testId}`, { data: data, action: action })
+            .then(response => then(response.data));
     };
 
     static destroy(testId) {

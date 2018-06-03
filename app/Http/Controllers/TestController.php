@@ -23,7 +23,8 @@ class TestController extends Controller
     {
         $user_status = auth()->user()->status->id;
 
-        if ($user_status === 1) {
+        if ($user_status === 1)
+        {
             $offset = request()->pageNumber * request()->pageSize - request()->pageSize;
             $limit = request()->pageSize;
             $teacher_id = auth()->user()->teacher->id;
@@ -103,9 +104,18 @@ class TestController extends Controller
      */
     public function show(Test $test)
     {
-        return response(
-            Test::with('theme')->find($test->id)
-        );
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1)
+        {
+            $teacher_id = auth()->user()->teacher->id;
+
+            return response(
+                Test::with('theme', 'speciality', 'scoreScales')
+                    ->where('teacher_id', $teacher_id)
+                    ->findOrFail($test->id)
+            );
+        }
     }
 
     /**
@@ -126,11 +136,58 @@ class TestController extends Controller
      * @param  \App\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request) //, Test $test
+    public function update(Request $request, Test $test)
     {
-        if ($request->action == 'change_state') {
-            Test::find($request->test)
-                ->update(['active' => $request->value]);
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1) {
+            $teacher_id = auth()->user()->teacher->id;
+
+            if ($request->action === 'change_state')
+            {
+                Test::where('teacher_id', $teacher_id)
+                    ->findOrFail($test->id)
+                    ->update(['active' => $request->data]);
+            }
+            elseif ($request->action === 'update_test')
+            {
+                $request = $request->data;
+
+                $validation = Validator::make($request, [
+                    'speciality_id' => 'required|numeric',
+                    'theme_id' => 'required|numeric',
+                    'name' => 'required|string|min:3|max:255',
+                    'number_questions' => 'required|numeric|min:1|max:99',
+                    'score_scales.*.from' => 'required|numeric|min:1|max:99',
+                    'score_scales.*.to' => 'required|numeric|min:1|max:99',
+                    'score_scales.*.score' => 'required|numeric|min:1|max:5'
+                ]);
+
+                if($validation->fails())
+                {
+                    return json_encode([
+                        'errors' => $validation->errors()->getMessages(),
+                        'code' => 422
+                    ]);
+                }
+
+                Test::find($test->id)->update([
+                    'speciality_id' => $request['speciality_id'],
+                    'theme_id' => $request['theme_id'],
+                    'teacher_id' => $request['teacher_id'],
+                    'name' => $request['name'],
+                    'number_questions' => $request['number_questions']
+                ]);
+
+                foreach ($request['score_scales'] as $val) {
+                    ScoreScale::find($val['id'])->update([
+                        'test_id' => $test->id,
+                        'from' => $val['from'],
+                        'to' => $val['to'],
+                        'score' => $val['score']
+                    ]);
+                }
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 <template>
 
-    <div class="errors" v-if="hasErrors">
-        <ul class="errors-list">
+    <div class="content" v-if="hasErrors">
+        <ul>
             <template v-for="field in errors">
                 <li class="error" style="color:red;" v-for="error in field">
                     {{ error }}

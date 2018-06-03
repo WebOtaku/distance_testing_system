@@ -32,6 +32,10 @@ let routes = [
     {
         path: '/workspace/themes/create',
         component: require('./components/Theme/Create')
+    },
+    {
+        path: '/workspace/themes/edit/:themeId',
+        component: require('./components/Theme/Edit')
     }
 ];
 

@@ -3,7 +3,7 @@
     <!--TODO: добавить поддержку vuex-->
     <!--TODO: разграничить доступ между студентом и учителем-->
 
-    <div :class="[pageClass]">
+    <div :class="[pageClass]" v-if="totalRow">
 
         <ul>
 

@@ -27,26 +27,29 @@ class ThemeController extends Controller
         if ($user_status === 1 && request()->query()) {
             $offset = request()->pageNumber * request()->pageSize - request()->pageSize;
             $limit = request()->pageSize;
-            $teacher_id = auth()->user()->teacher->id;
 
-            $themes = Theme::offset($offset)
+            $themes = Theme::offset($offset)->limit($limit)
                 ->with('disciplineTeacher.discipline.cicle')
-                ->limit($limit)
-                ->whereExists(function ($query) {
+                ->whereHas('disciplineTeacher', function ($query) {
                     $teacher_id = auth()->user()->teacher->id;
-                    $query->select(DB::raw(1))
-                        ->from('discipline_teachers')
-                        ->whereRaw('discipline_teachers.teacher_id = ' . $teacher_id);
+                    $query->where('teacher_id', $teacher_id);
                 })->get();
 
-            $totalRow = count(Theme::whereExists(function ($query) {
+
+            $totalRow = count(Theme::whereHas('disciplineTeacher', function ($query) {
                 $teacher_id = auth()->user()->teacher->id;
-                $query->select(DB::raw(1))
-                    ->from('discipline_teachers')
-                    ->whereRaw('discipline_teachers.teacher_id = ' . $teacher_id);
+                $query->where('teacher_id', $teacher_id);
             })->get());
 
             return response()->json(compact(['themes', 'totalRow']));
+        }
+        else if ($user_status === 1) {
+            return response(
+                Theme::whereHas('disciplineTeacher', function ($query) {
+                    $teacher_id = auth()->user()->teacher->id;
+                    $query->where('teacher_id', $teacher_id);
+                })->get()
+            );
         }
         else {
             return response(
@@ -116,7 +119,17 @@ class ThemeController extends Controller
      */
     public function show(Theme $theme)
     {
-        //
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1) {
+            $theme = Theme::with('disciplineTeacher.discipline.cicle')
+                ->whereHas('disciplineTeacher', function ($query) {
+                    $teacher_id = auth()->user()->teacher->id;
+                    $query->where('teacher_id', $teacher_id);
+                })->findOrFail($theme->id);
+
+            return response($theme);
+        }
     }
 
     /**
@@ -139,7 +152,39 @@ class ThemeController extends Controller
      */
     public function update(Request $request, Theme $theme)
     {
-        //
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1) {
+
+            $teacher_id = auth()->user()->teacher->id;
+
+            $validation = Validator::make($request->all(), [
+                'discipline_id' => 'required|numeric',
+                'name' => 'required|string|min:3|max:255',
+                'course' => 'required|numeric|min:1|max:4'
+            ]);
+
+            if($validation->fails())
+            {
+                return json_encode([
+                    'errors' => $validation->errors()->getMessages(),
+                    'code' => 422
+                ]);
+            }
+
+            $discipline_teacher = DisciplineTeacher::firstOrCreate([
+                'teacher_id' => $teacher_id,
+                'discipline_id' => $request->discipline_id
+            ]);
+
+            $theme = Theme::find($theme->id)->update([
+                'discipline_teacher_id' => $discipline_teacher->id,
+                'name' => $request->name,
+                'course' => $request->course
+            ]);
+
+            return response()->json($theme);
+        }
     }
 
     /**
