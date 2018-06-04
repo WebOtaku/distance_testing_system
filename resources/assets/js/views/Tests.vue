@@ -38,7 +38,7 @@
                         <a class="button is-link is-outlined">Редактировать</a>
                     </router-link>
 
-                    <button class="button is-primary is-outlined"
+                    <button class="button is-success is-outlined"
                             @click="changeTestState($event)"
                     >
                         Изменить статус
@@ -117,13 +117,12 @@
                 let index = this.tests.findIndex(x => x.id === testId);
                 let value = this.tests[index].active;
 
-                Test.update(testId, !value, 'change_state')
-                    .then(() => {
-                        Vue.set(this.tests[index], 'active', !value);
-                        this.formationGridData(this.tests);
-                        $event.target.classList.remove('is-loading');
-                        $event.target.disabled = false;
-                    });
+                Test.update(!value, testId, 'change_state', () => {
+                    Vue.set(this.tests[index], 'active', !value);
+                    this.formationGridData(this.tests);
+                    $event.target.classList.remove('is-loading');
+                    $event.target.disabled = false;
+                });
             },
 
             deleteTest($event) {

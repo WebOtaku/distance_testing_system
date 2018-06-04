@@ -16,7 +16,7 @@ class CreateThemesTable extends Migration
         Schema::create('themes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('discipline_teacher_id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->integer('course');
             $table->timestamps();
         });

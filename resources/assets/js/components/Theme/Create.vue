@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="control">
-                        <router-link class="button is-link" to="/workspace/themes" exact>
+                        <router-link class="button is-link is-outlined" to="/workspace/themes" exact>
                             Назад
                         </router-link>
                     </div>

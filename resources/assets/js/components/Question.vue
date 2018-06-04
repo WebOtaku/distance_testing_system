@@ -39,7 +39,7 @@
 
                     <div class="field">
                         <div class="control">
-                            <button class="button is-success is-outlined" @click.prevent="addAnswer">
+                            <button class="button is-link is-outlined" @click.prevent="addAnswer">
                                 Добавить ответ
                             </button>
                         </div>
@@ -93,7 +93,7 @@
 
                 <div class="field is-grouped">
                     <div class="control">
-                        <button type="submit" class="button is-primary is-outlined" 
+                        <button type="submit" class="button is-primary"
                                 @click.prevent="addQuestion"
                         >
                             Добавить

@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="control">
-                        <router-link class="button is-link" ref="link_back" to="/workspace/themes" exact>
+                        <router-link class="button is-link is-outlined" ref="link_back" to="/workspace/themes" exact>
                             Назад
                         </router-link>
                     </div>

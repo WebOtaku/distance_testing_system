@@ -72,9 +72,7 @@
 
                     <div class="field is-grouped score-scales">
 
-                        <div class="field"
-                             v-for="(score_scale, index) in test.score_scales"
-                        >
+                        <div class="field" v-for="(score_scale, index) in test.score_scales">
 
                             <label class="label" :for="`score-scale-${index}`">
                                 {{ score_scale.score }} :
@@ -96,11 +94,12 @@
 
                     </div>
 
-                    <div class="field">
+                    <div class="field status">
 
-                        <label class="label" for="status">Статус</label>
+                        <label class="label" for="status">Статус:</label>
+
                         <div class="control">
-                            <button class="button is-primary is-outlined" id="status"
+                            <button :class="['button', 'is-success', {'is-outlined': !test.active}]" id="status"
                                     @click="changeTestState(test.active, test.id, $event)"
                             >
                                 {{ test.active | fromBool }}
@@ -111,6 +110,22 @@
 
                     <!--ERRORS-->
                     <errors :errors="errors"></errors>
+
+                    <div class="field is-grouped">
+
+                        <div class="control">
+                            <button type="submit" class="button is-primary"@click.prevent="updateTest">
+                                Cохранить
+                            </button>
+                        </div>
+
+                        <div class="control">
+                            <router-link class="button is-link is-outlined" to="/workspace/tests" exact>
+                                Назад
+                            </router-link>
+                        </div>
+
+                    </div>
 
                 </form>
 
@@ -173,20 +188,6 @@
 
                 </div>
 
-            </div>
-
-            <div class="field is-grouped">
-                <div class="control">
-                    <button type="submit" class="button is-primary is-outlined" @click.prevent="updateTest">
-                        Cохранить
-                    </button>
-                </div>
-
-                <div class="control">
-                    <router-link class="button is-link is-outlined" to="/workspace/tests" exact>
-                        Назад
-                    </router-link>
-                </div>
             </div>
 
         </section>
@@ -316,7 +317,17 @@
         max-width: 400px;
         display: none;
     }
+
     .notification.is-active {
         display: block;
+    }
+
+    .status {
+        display: flex;
+        align-items: center;
+    }
+
+    .status label {
+        margin: 0 .8rem 0 0;
     }
 </style>

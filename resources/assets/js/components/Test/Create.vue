@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="control">
-                        <router-link class="button is-link" to="/workspace/tests" exact>
+                        <router-link class="button is-link is-outlined" to="/workspace/tests" exact>
                             Назад
                         </router-link>
                     </div>

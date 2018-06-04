@@ -84,7 +84,7 @@ class ThemeController extends Controller
 
             $validation = Validator::make($request->all(), [
                 'discipline_id' => 'required|numeric',
-                'name' => 'required|string|min:3|max:255|unique:themes',
+                'name' => 'required|string|min:3|max:255',
                 'course' => 'required|numeric|min:1|max:4'
             ]);
 
