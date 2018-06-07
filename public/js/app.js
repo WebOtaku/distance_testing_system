@@ -18436,7 +18436,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "edit_test" }, [
     _c("section", { staticClass: "section" }, [
-      _c("h1", { staticClass: "title" }, [_vm._v("Редактироание теста")]),
+      _c("h1", { staticClass: "title" }, [_vm._v("Редактирование теста")]),
       _vm._v(" "),
       !_vm.hasErrors
         ? _c("div", { ref: "notify", staticClass: "notification is-primary" }, [

@@ -4,7 +4,7 @@
 
         <section class="section">
 
-            <h1 class="title">Редактироание теста</h1>
+            <h1 class="title">Редактирование теста</h1>
 
             <div class="notification is-primary" ref="notify" v-if="!hasErrors">
                 <button class="delete" @click="closeNotify"></button>
