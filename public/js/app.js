@@ -18305,6 +18305,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -18783,6 +18785,8 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
+                _c("errors", { attrs: { errors: _vm.errors } }),
+                _vm._v(" "),
                 _c("div", { staticClass: "field is-grouped" }, [
                   _c("div", { staticClass: "control" }, [
                     _c(
@@ -18824,9 +18828,7 @@ var render = function() {
                     ],
                     1
                   )
-                ]),
-                _vm._v(" "),
-                _c("errors", { attrs: { errors: _vm.errors } })
+                ])
               ],
               1
             )
@@ -18855,7 +18857,7 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                        Добавить вопрос\n                    "
+                      "\n                        Добавить\n                    "
                     )
                   ]
                 )

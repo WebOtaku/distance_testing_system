@@ -6,7 +6,7 @@
 
         <section class="section">
 
-            <h1 class="title">Регистрация</h1>
+            <h1 class="title">Войти</h1>
 
             <h2 class="subtitle">Войти или <a href="/register">Зарегистрироваться</a></h2>
 
