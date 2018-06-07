@@ -140,7 +140,7 @@
                         <router-link class="button is-link is-outlined"
                              :to="`/workspace/tests/edit/${this.testId}/question`" exact
                         >
-                            Добавить вопрос
+                            Добавить
                         </router-link>
                     </div>
                 </div>
