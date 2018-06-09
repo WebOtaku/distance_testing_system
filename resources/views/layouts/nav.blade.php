@@ -1,7 +1,7 @@
 <div class="navbar-start">
 
     <router-link class="navbar-item" to="/workspace/profile/{{ auth()->user()->id }}" exact>
-        <a>Профиль</a>
+        Профиль
     </router-link>
 
     <div class="navbar-item has-dropdown is-hoverable">

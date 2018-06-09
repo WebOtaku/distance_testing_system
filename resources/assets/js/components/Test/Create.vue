@@ -2,11 +2,11 @@
 
     <div class="create_test">
 
-        <section class="section">
+        <section class="section" v-if="themes.length">
 
-            <h2 class="title">Создание теста</h2>
+            <h1 class="title">Добавление теста</h1>
 
-            <form method="POST" class="form">
+            <form class="form">
 
                 <h2 class="subtitle">Основная информация:</h2>
 
@@ -14,14 +14,16 @@
                     <label class="label" for="speciality_id">Специальность</label>
 
                     <div class="select">
-                        <select name="speciality_id" id="speciality_id" aria-describedby="testSpeciality"
+                        <select name="speciality_id" id="speciality_id"
                                 v-model="test.speciality_id" required
                         >
+
                             <option v-for="speciality in specialities"
                                     :value="speciality.id"
                             >
                                 {{ speciality.name }}
                             </option>
+
                         </select>
                     </div>
                 </div>
@@ -30,14 +32,16 @@
                     <label class="label" for="theme_id">Тема</label>
 
                     <div class="select">
-                        <select name="theme_id" id="theme_id" aria-describedby="testTheme"
+                        <select name="theme_id" id="theme_id"
                                 v-model="test.theme_id" required
                         >
+
                             <option v-for="theme in themes"
                                     :value="theme.id"
                             >
                                 {{ theme.name }}
                             </option>
+
                         </select>
                     </div>
                 </div>
@@ -46,7 +50,7 @@
                     <label class="label" for="name">Название</label>
 
                     <div class="control">
-                        <input type="text" class="input" name="name" id="name" aria-describedby="testName"
+                        <input type="text" class="input" name="name" id="name"
                                v-model="test.name" required>
                     </div>
                 </div>
@@ -55,13 +59,13 @@
                     <label class="label" for="number_questions">Количество вопросов</label>
 
                     <div class="control">
-                        <input type="number" class="input" name="number_questions" id="number_questions"
-                               aria-describedby="testName" min="1" max="99"
+                        <input type="number" class="input" name="number_questions"
+                               id="number_questions" min="1" max="99"
                                v-model="test.number_questions" required>
                     </div>
                 </div>
 
-                <h2 class="subtitle">Разбаловка:</h2>
+                <h2 class="subtitle">Разбалловка:</h2>
 
                 <div class="field is-grouped score-scales">
 
@@ -74,14 +78,13 @@
                         </label>
 
                         <div class="control">
-                            от <input type="number" class="input" :id="`score-scale-${index}`"
-                                      min="1" max="99" aria-describedby="scaleFrom"
+                            от <input type="number" class="input" min="1" max="99"
+                                      :id="`score-scale-${index}`"
                                       v-model="score_scale.from">
                         </div>
 
                         <div class="control">
-                            до <input type="number" class="input"
-                                      min="1" max="99" aria-describedby="scaleTo"
+                            до <input type="number" class="input" min="1" max="99"
                                       v-model="score_scale.to">
                         </div>
 
@@ -94,8 +97,10 @@
 
                 <div class="field is-grouped">
                     <div class="control">
-                        <button type="submit" class="button is-primary" @click.prevent="createTest">
-                            Создать
+                        <button type="submit" class="button is-primary"
+                                @click.prevent="createTest"
+                        >
+                            Добавить
                         </button>
                     </div>
 
@@ -108,6 +113,18 @@
 
             </form>
 
+        </section>
+
+        <section class="section" v-else="themes.length">
+            <h1 class="title">Добавление теста</h1>
+
+            <p class="block">Список тем пуст, для добавления теста необходимо иметь хотябы одну тему.</p>
+
+            <router-link tag="div" class="button is-link is-outlined block is-inline-block"
+                         to="/workspace/themes/create" exact
+            >
+                Добавить тему
+            </router-link>
         </section>
 
     </div>
@@ -160,6 +177,7 @@
         methods: {
             createTest($event) {
                 $event.target.disabled = true;
+                $event.target.classList.add('is-loading');
 
                 Test.store(this.test, data => {
                     if (!data.errors) {
@@ -169,6 +187,7 @@
                     else {
                         this.errors = data.errors;
                         $event.target.disabled = false;
+                        $event.target.classList.remove('is-loading');
                     }
                 });
             },

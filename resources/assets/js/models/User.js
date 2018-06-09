@@ -1,6 +1,6 @@
 class User {
-    static fetch(then) {
-        return axios.get('/users')
+    static fetch(userId, then) {
+        return axios.get(`/users/${userId}`)
             .then(response => then(response.data))
     }
 }

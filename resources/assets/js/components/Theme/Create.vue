@@ -1,27 +1,29 @@
 <template>
 
-    <div class="create_theme">
+    <div class="create-theme">
 
         <section class="section">
 
-            <h1 class="title">
-                Добавление темы
-            </h1>
+            <h1 class="title">Добавление темы</h1>
 
-            <form method="POST" class="form">
+            <form class="form">
 
                 <div class="field">
                     <label class="label" for="cicle">Цикл</label>
+
                     <div class="control">
                         <div class="select" ref="cicle">
-                            <select name="cicle" id="cicle" @input="fetchDisciplines({}, $event)"
-                                    aria-describedby="disciplineCicle" v-model="cicleId" required
+                            <select name="cicle" id="cicle"
+                                    @input="fetchDisciplines({}, $event)"
+                                    v-model="cicleId" required
                             >
+
                                 <option v-for="cicle in cicles"
                                         :value="cicle.id"
                                 >
                                     {{ cicle.name }}
                                 </option>
+
                             </select>
                         </div>
                     </div>
@@ -29,17 +31,22 @@
 
                 <div class="field">
                     <label class="label" for="discipline_id">Дисциплина</label>
+
                     <div class="control">
                         <div class="select" ref="discipline_id">
+
                             <select name="discipline_id" id="discipline_id"
-                                    aria-describedby="themeDiscipline" v-model="theme.discipline_id" required
+                                    v-model="theme.discipline_id" required
                             >
+
                                 <option v-for="discipline in disciplines"
                                         :value="discipline.id"
                                 >
                                     {{ discipline.name }}
                                 </option>
+
                             </select>
+
                         </div>
                     </div>
                 </div>
@@ -47,16 +54,17 @@
                 <div class="field">
                     <label class="label" for="name">Название</label>
                     <div class="control">
-                        <input type="text" class="input" name="name" id="name" aria-describedby="themeName"
-                           v-model="theme.name" required>
+                        <input type="text" class="input" name="name" id="name"
+                               v-model="theme.name" required>
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label" for="course">Курс</label>
                     <div class="control">
-                        <input type="number" class="input" name="course" id="course" aria-describedby="themeCourse"
-                           v-model="theme.course" min="1" max="4" required>
+                        <input type="number" class="input" name="course"
+                               id="course" min="1" max="4"
+                               v-model="theme.course" required>
                     </div>
                 </div>
 
@@ -66,7 +74,9 @@
 
                 <div class="field is-grouped">
                     <div class="control">
-                        <button type="submit" class="button is-primary" @click.prevent="createTheme">
+                        <button type="submit" class="button is-primary"
+                                @click.prevent="createTheme"
+                        >
                             Добавить
                         </button>
                     </div>

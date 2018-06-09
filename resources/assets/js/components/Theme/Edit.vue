@@ -4,9 +4,7 @@
 
         <section class="section">
 
-            <h1 class="title">
-                Редактирование темы
-            </h1>
+            <h1 class="title">Редактирование темы</h1>
 
             <div class="notification is-primary" ref="notify" v-if="!hasErrors">
                 <button class="delete" @click="closeNotify"></button>
@@ -17,16 +15,20 @@
 
                 <div class="field">
                     <label class="label" for="cicle">Цикл</label>
+
                     <div class="control">
                         <div class="select" ref="cicle">
-                            <select name="cicle" id="cicle" @input="fetchDisciplines($event)"
-                                    aria-describedby="disciplineCicle" v-model="cicleId" required
+                            <select name="cicle" id="cicle"
+                                    @input="fetchDisciplines($event)"
+                                    v-model="cicleId" required
                             >
+
                                 <option v-for="cicle in cicles"
                                         :value="cicle.id"
                                 >
                                     {{ cicle.name }}
                                 </option>
+
                             </select>
                         </div>
                     </div>
@@ -34,16 +36,19 @@
 
                 <div class="field">
                     <label class="label" for="discipline_id">Дисциплина</label>
+
                     <div class="control">
                         <div class="select" ref="discipline_id">
                             <select name="discipline_id" id="discipline_id"
-                                    aria-describedby="themeDiscipline" v-model="theme.discipline_id" required
+                                    v-model="theme.discipline_id" required
                             >
+
                                 <option v-for="discipline in disciplines"
                                         :value="discipline.id"
                                 >
                                     {{ discipline.name }}
                                 </option>
+
                             </select>
                         </div>
                     </div>
@@ -52,7 +57,7 @@
                 <div class="field">
                     <label class="label" for="name">Название</label>
                     <div class="control">
-                        <input type="text" class="input" name="name" id="name" aria-describedby="themeName"
+                        <input type="text" class="input" name="name" id="name"
                                v-model="theme.name" required>
                     </div>
                 </div>
@@ -65,19 +70,20 @@
                     </div>
                 </div>
 
-
                 <!--ERRORS-->
                 <errors :errors="errors"></errors>
 
                 <div class="field is-grouped">
                     <div class="control">
-                        <button type="submit" class="button is-primary" @click.prevent="updateTheme">
+                        <button type="submit" class="button is-primary"
+                                @click.prevent="updateTheme"
+                        >
                             Cохранить
                         </button>
                     </div>
 
                     <div class="control">
-                        <router-link class="button is-link is-outlined" ref="link_back" to="/workspace/themes" exact>
+                        <router-link class="button is-link is-outlined" to="/workspace/themes" exact>
                             Назад
                         </router-link>
                     </div>

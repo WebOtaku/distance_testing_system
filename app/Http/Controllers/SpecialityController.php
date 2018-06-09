@@ -14,7 +14,9 @@ class SpecialityController extends Controller
      */
     public function index()
     {
-        return response(Speciality::all());
+        return response(
+            Speciality::all()
+        );
     }
 
     /**

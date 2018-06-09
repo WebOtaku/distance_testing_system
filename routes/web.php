@@ -75,7 +75,7 @@ Route::get('/cicles', 'CicleController@index');
 
 Route::get('/disciplines/{cicle}', 'DisciplineController@show');
 
-Route::get('/users', 'UserController@show');
+Route::get('/users/{user}', 'UserController@show');
 
 Route::get('/students/{user}', 'StudentController@show');
 

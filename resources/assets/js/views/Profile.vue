@@ -4,9 +4,7 @@
 
         <section class="section">
 
-            <h1 class="title">
-                Профиль
-            </h1>
+            <h1 class="title">Профиль</h1>
 
             <div class="content">
 
@@ -56,8 +54,6 @@
 
                 </template>
 
-
-
             </div>
 
         </section>
@@ -74,6 +70,7 @@
     export default {
         data() {
             return {
+                userId: this.$route.params.userId,
                 user: {},
                 student: {},
                 teacher: {}
@@ -96,7 +93,7 @@
 
         methods: {
             fetchUser() {
-                User.fetch(user => {
+                User.fetch(this.userId, user => {
                     this.user = user;
 
                     if (user.status.id === 1) {
@@ -135,8 +132,7 @@
     }
 
     .profile .profile-avatar img {
-        border-radius: 20px;
-        border-width: 4px;
+        border-radius: 15px;
     }
 
     .profile .profile-info {

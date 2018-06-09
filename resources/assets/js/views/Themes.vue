@@ -4,18 +4,19 @@
 
         <section class="section">
 
-            <h1 class="title">
-                Темы
-            </h1>
+            <h1 class="title">Темы</h1>
 
-            <template v-if="themes.length">
+            <div class="page-controls">
 
-                <form id="search" class="is-inline-block">
+                <form id="search" class="block is-inline-block"
+                      v-if="themes.length"
+                >
 
                     <div class="field">
                         <div class="control has-icons-left">
-                            <input class="input" name="query" v-model="searchQuery" type="text"
-                                    placeholder="Искать...">
+                            <input type="text" class="input" name="query" placeholder="Искать..."
+                                   v-model="searchQuery">
+
                             <span class="icon is-small is-left">
                                 <i class="fas fa-search"></i>
                             </span>
@@ -24,21 +25,21 @@
 
                 </form>
 
-            </template>
-
-            <div class="is-inline-block">
-
-                <router-link tag="div" class="is-inline-block" to="/workspace/themes/create" exact>
-                    <a class="button is-link is-outlined">Добавить</a>
+                <router-link tag="div" class="button is-link is-outlined block is-inline-block"
+                             to="/workspace/themes/create" exact
+                >
+                    Добавить
                 </router-link>
 
                 <template v-if="themes.length">
 
-                    <router-link tag="div" class="is-inline-block" :to="`/workspace/themes/edit/${selectedTheme}`" exact>
-                        <a class="button is-link is-outlined">Редактировать</a>
+                    <router-link tag="div" class="button is-link is-outlined block is-inline-block"
+                                 :to="`/workspace/themes/edit/${selectedTheme}`" exact
+                    >
+                        Редактировать
                     </router-link>
 
-                    <button class="button is-danger is-outlined"
+                    <button class="button is-danger is-outlined block is-inline-block"
                             @click="deleteTheme($event)"
                     >
                         Удалить
@@ -57,7 +58,7 @@
             ></table-grid>
 
             <section class="section" v-else>
-                <p class="is-">Список тем пуст</p>
+                <p>Список тем пуст</p>
             </section>
 
             <!-- pagination bar -->
@@ -141,7 +142,7 @@
                         'дисциплина': x.discipline_teacher.discipline.name,
                         'название': x.name,
                         'курс': x.course
-                });
+                    });
                 })
             }
         }

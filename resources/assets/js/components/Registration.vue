@@ -1,6 +1,6 @@
 <template>
 
-    <div class="registration_form">
+    <div class="registration-form">
 
         <section class="section">
 
@@ -18,10 +18,11 @@
                     <label class="label" for="status_id">Статус</label>
 
                     <div class="select">
-                        <select name="status_id" id="status_id"
-                                aria-describedby="userStatus" v-model="userStatus" required>
+                        <select name="status_id" id="status_id" v-model="userStatus" required>
+
                             <option :value="1">Преподаватель</option>
                             <option :value="2">Студент</option>
+
                         </select>
                     </div>
                 </div>
@@ -30,8 +31,7 @@
                     <label class="label" for="surname">Фамилия</label>
 
                     <div class="control">
-                        <input type="text" name="surname" class="input" id="surname"
-                               aria-describedby="userSurname" required>
+                        <input type="text" name="surname" class="input" id="surname" required>
                     </div>
                 </div>
 
@@ -39,8 +39,7 @@
                     <label class="label" for="name">Имя</label>
 
                     <div class="control">
-                        <input type="text" name="name" class="input" id="name"
-                               aria-describedby="userName" required>
+                        <input type="text" name="name" class="input" id="name" required>
                     </div>
                 </div>
 
@@ -48,8 +47,7 @@
                     <label class="label" for="patronymic">Отчество</label>
 
                     <div class="control">
-                        <input type="text" name="patronymic" class="input" id="patronymic"
-                               aria-describedby="userPatronymic" required>
+                        <input type="text" name="patronymic" class="input" id="patronymic" required>
                     </div>
                 </div>
 
@@ -57,8 +55,7 @@
                     <label class="label" for="email">E-mail</label>
 
                     <div class="control">
-                        <input type="email" name="email" class="input" id="email"
-                               aria-describedby="userEmail" required>
+                        <input type="email" name="email" class="input" id="email" required>
                     </div>
                 </div>
 
@@ -66,8 +63,7 @@
                     <label class="label" for="password">Пароль</label>
 
                     <div class="control">
-                        <input type="password" name="password" class="input" id="password"
-                               aria-describedby="userPassword" required>
+                        <input type="password" name="password" class="input" id="password" required>
                     </div>
                 </div>
 
@@ -76,7 +72,7 @@
 
                     <div class="control">
                         <input type="password" name="password_confirmation" class="input"
-                               id="password_confirmation" aria-describedby="passwordСonfirmation" required>
+                               id="password_confirmation" required>
                     </div>
                 </div>
 
@@ -87,8 +83,8 @@
                         <label class="label" for="speciality">Квалификация/специальность</label>
 
                         <div class="control">
-                            <textarea name="speciality" class="textarea" id="speciality" rows="4"
-                                      aria-describedby="teacherSpeciality" required></textarea>
+                            <textarea name="speciality" class="textarea"
+                                      id="speciality" rows="4" required></textarea>
                         </div>
                     </div>
 
@@ -102,13 +98,14 @@
                         <label class="label" for="speciality_id">Специальность</label>
 
                         <div class="select">
-                            <select name="speciality_id" id="speciality_id"
-                                    aria-describedby="studentSpeciality" required>
+                            <select name="speciality_id" id="speciality_id" required>
+
                                 <option v-for="speciality in specialities"
                                         :value="speciality.id"
                                 >
                                     {{ speciality.code + ' - ' + speciality.name }}
                                 </option>
+
                             </select>
                         </div>
                     </div>
@@ -117,8 +114,7 @@
                         <label class="label" for="group">Группа</label>
 
                         <div class="control">
-                            <input type="text" name="group" class="input" id="group"
-                                   aria-describedby="studentGroup" required>
+                            <input type="text" name="group" class="input" id="group" required>
                         </div>
                     </div>
 
@@ -127,7 +123,7 @@
 
                         <div class="control">
                             <input type="number" name="course" class="input" id="course"
-                                   aria-describedby="studentCourse" min="1" max="4" value="1" required>
+                                   min="1" max="4" value="1" required>
                         </div>
                     </div>
 
@@ -140,8 +136,8 @@
                     <div class="file">
                         <label class="file-label">
                             <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
-                            <input type="file" class="file-input" name="avatar" id="avatar"
-                                   aria-describedby="userAvatar" required>
+                            <input type="file" class="file-input" name="avatar" id="avatar" required>
+
                             <span class="file-cta">
                                 <span class="file-icon">
                                     <i class="fas fa-upload"></i>
@@ -179,10 +175,16 @@
             }
         },
 
+        methods: {
+            fetchSpecialities() {
+                Speciality.fetchAll(specialities => {
+                    this.specialities = specialities;
+                });
+            }
+        },
+
         created() {
-            Speciality.fetchAll(specialities => {
-                this.specialities = specialities;
-            });
+            this.fetchSpecialities();
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="create_question">
+    <div class="create-question">
 
         <section class="section">
 
@@ -13,7 +13,7 @@
 
                     <div class="select">
                         <select name="question_type_id" id="question_type_id"
-                                aria-describedby="questionType" @input="changeQuestionType($event)"
+                                @input="changeQuestionType($event)"
                                 v-model="question.question_type_id" required
                         >
                             <option :value="1">Строгий</option>
@@ -28,19 +28,20 @@
                     <label class="label" for="question">Текст вопроса</label>
 
                     <div class="control">
-                        <textarea class="textarea" name="question" id="question" aria-describedby="questionText"
+                        <textarea class="textarea" name="question" id="question"
                                   rows="4" v-model="question.question" required></textarea>
                     </div>
                 </div>
 
-                <div class="content" v-if="question.question_type_id === 1 || question.question_type_id === 2">
-
+                <div class="content" v-if="question.question_type_id === 1
+                                           || question.question_type_id === 2"
+                >
                     <h6>Ответы:</h6>
 
                     <div class="field">
                         <div class="control">
                             <button class="button is-link is-outlined" @click.prevent="addAnswer">
-                                Добавить ответ
+                                Добавить
                             </button>
                         </div>
                     </div>
@@ -52,19 +53,21 @@
                         <div class="control is-grouped answer">
                             <input type="radio" name="correct_answer"
                                    v-if="question.question_type_id === 1 && index === 0"
-                                   @input="radioCheck(index)" aria-describedby="correctAnswerSelector"
-                                   checked required>
+                                   @input="radioCheck(index)" checked required>
 
-                            <input type="radio" name="correct_answer" v-else-if="question.question_type_id === 1"
-                                   @input="radioCheck(index)" aria-describedby="correctAnswerSelector" required>
+                            <input type="radio" name="correct_answer"
+                                   v-else-if="question.question_type_id === 1"
+                                   @input="radioCheck(index)" required>
 
-                            <input type="checkbox" name="correct_answer" v-if="question.question_type_id === 2"
-                                   v-model="answer.correct_answer" aria-describedby="correctAnswerSelector">
+                            <input type="checkbox" name="correct_answer"
+                                   v-if="question.question_type_id === 2"
+                                   v-model="answer.correct_answer">
 
-                            <input type="text" class="input" v-model="answer.answer"
-                                   aria-describedby="answerBody" required>
+                            <input type="text" class="input"
+                                   v-model="answer.answer" required>
 
-                            <button class="button is-danger is-outlined" v-if="index > 1"
+                            <button class="button is-danger is-outlined"
+                                    v-if="index > 1"
                                     @click.prevent="deleteAnswer(index)"
                             >
                                 Удалить
@@ -81,8 +84,8 @@
 
                     <div class="field">
                         <div class="control">
-                            <input type="text" class="input" name="answer_body" v-model="question.answer"
-                                   aria-describedby="answerBody" required>
+                            <input type="text" class="input" name="answer_body"
+                                   v-model="question.answer" required>
                         </div>
                     </div>
 

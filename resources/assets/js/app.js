@@ -2,11 +2,13 @@ import "./bootstrap";
 import router from "./routes";
 
 import Registration from './components/Registration';
+import Login from './components/Login';
 import Errors from './components/Errors';
 import vPage from './components/vPage/vPage';
 import TableGrid from './components/TableGrid';
 
 Vue.component('registration', Registration);
+Vue.component('login', Login);
 Vue.component('errors', Errors);
 Vue.component('vPage', vPage);
 Vue.component('TableGrid', TableGrid);

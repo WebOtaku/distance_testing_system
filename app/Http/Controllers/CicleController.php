@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 
 class CicleController extends Controller
 {
-    /*Прокинуть через Auth и тему тоже*/
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.

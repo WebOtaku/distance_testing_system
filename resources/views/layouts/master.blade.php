@@ -4,12 +4,14 @@
 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Система дистанционного тестирования для студентов ГБПОУ ЧТПТиУ">
+        <meta name="keywords" content="Система, обучение, дистанционное обучение, ГБПОУ ЧТПТиУ, тестирование">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {{-- CSRF-TOKEN --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>СДТ</title>
+        <title>Система дистанционного тестирования</title>
 
         {{-- CSS --}}
         <link rel="stylesheet" href="/css/app.css">
@@ -20,13 +22,11 @@
 
         <section class="section is-paddingless">
 
-            <div class="container is-fluid">
+            <div class="container is-fluid" id="app">
 
-                <main class="main" id="app">
-                    @include ('layouts.header')
+                @include ('layouts.header')
 
-                    @yield ('content')
-                </main>
+                @yield ('content')
 
             </div>
 

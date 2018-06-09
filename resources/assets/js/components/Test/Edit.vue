@@ -13,7 +13,7 @@
 
             <div class="content" v-if="testFetched">
 
-                <form method="POST" class="form">
+                <form class="form">
 
                     <h4>Основная информация:</h4>
 
@@ -21,14 +21,16 @@
                         <label class="label" for="speciality_id">Специальность</label>
 
                         <div class="select">
-                            <select name="speciality_id" id="speciality_id" aria-describedby="testSpeciality"
+                            <select name="speciality_id" id="speciality_id"
                                     v-model="test.speciality_id" required
                             >
+
                                 <option v-for="speciality in specialities"
                                         :value="speciality.id"
                                 >
                                     {{ speciality.name }}
                                 </option>
+
                             </select>
                         </div>
                     </div>
@@ -37,7 +39,7 @@
                         <label class="label" for="theme_id">Тема</label>
 
                         <div class="select">
-                            <select name="theme_id" id="theme_id" aria-describedby="testTheme"
+                            <select name="theme_id" id="theme_id"
                                     v-model="test.theme_id" required
                             >
                                 <option v-for="theme in themes"
@@ -53,7 +55,7 @@
                         <label class="label" for="name">Название</label>
 
                         <div class="control">
-                            <input type="text" class="input" name="name" id="name" aria-describedby="testName"
+                            <input type="text" class="input" name="name" id="name"
                                    v-model="test.name" required>
                         </div>
                     </div>
@@ -62,13 +64,13 @@
                         <label class="label" for="number_questions">Количество вопросов</label>
 
                         <div class="control">
-                            <input type="number" class="input" name="number_questions" id="number_questions"
-                                   aria-describedby="testName" min="1" max="99"
+                            <input type="number" class="input" name="number_questions"
+                                   id="number_questions" min="1" max="99"
                                    v-model="test.number_questions" required>
                         </div>
                     </div>
 
-                    <h4 class="subtitle">Разбаловка:</h4>
+                    <h4 class="subtitle">Разбалловка:</h4>
 
                     <div class="field is-grouped score-scales">
 
@@ -79,14 +81,13 @@
                             </label>
 
                             <div class="control">
-                                от <input type="number" class="input" :id="`score-scale-${index}`"
-                                          min="1" max="99" aria-describedby="scaleFrom"
+                                от <input type="number" class="input" min="1" max="99"
+                                          :id="`score-scale-${index}`"
                                           v-model="score_scale.from">
                             </div>
 
                             <div class="control">
-                                до <input type="number" class="input"
-                                          min="1" max="99" aria-describedby="scaleTo"
+                                до <input type="number" class="input" min="1" max="99"
                                           v-model="score_scale.to">
                             </div>
 
@@ -99,7 +100,8 @@
                         <label class="label" for="status">Статус:</label>
 
                         <div class="control">
-                            <button :class="['button', 'is-success', {'is-outlined': !test.active}]" id="status"
+                            <button id="status"
+                                    :class="['button', 'is-success', {'is-outlined': !test.active}]"
                                     @click="changeTestState(test.active, test.id, $event)"
                             >
                                 {{ test.active | fromBool }}
@@ -114,7 +116,9 @@
                     <div class="field is-grouped">
 
                         <div class="control">
-                            <button type="submit" class="button is-primary"@click.prevent="updateTest">
+                            <button type="submit" class="button is-primary"
+                                    @click.prevent="updateTest"
+                            >
                                 Cохранить
                             </button>
                         </div>
@@ -145,13 +149,20 @@
                     </div>
                 </div>
 
-                <div class="content" v-for="(question, index) in questions">
+                <div v-if="!questions.length">Список вопросов пуст</div>
+
+                <div class="content" v-if="questions.length"
+                     v-for="(question, index) in questions"
+                >
 
                     <p>{{ index + 1 }}. {{ question.question }}</p>
 
                     <template v-if="question.answer_free">
-                        <h6>Ответ: <span style="font-weight: normal;">
-                            {{ question.answer_free.answer }}</span>
+
+                        <h6>Ответ:
+                            <span style="font-weight: normal;">
+                                {{ question.answer_free.answer }}
+                            </span>
                         </h6>
 
                     </template>
@@ -162,11 +173,13 @@
 
                         <div v-for="answer in question.answer_variants">
 
-                            <input type="radio" :name="`correct_answer_${index}`"
+                            <input type="radio"
+                                   :name="`correct_answer_${index}`"
                                    v-if="question.question_type_id === 1"
                                    :checked="answer.correct_answer" disabled>
 
-                            <input type="checkbox" :name="`correct_answer_${index}`"
+                            <input type="checkbox"
+                                   :name="`correct_answer_${index}`"
                                     v-if="question.question_type_id === 2"
                                    :checked="answer.correct_answer" disabled>
 

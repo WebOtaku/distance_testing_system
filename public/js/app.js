@@ -4280,12 +4280,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__routes__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Registration__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Registration___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Registration__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Errors__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Errors___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Errors__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_vPage_vPage__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_vPage_vPage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_vPage_vPage__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_TableGrid__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_TableGrid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_TableGrid__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Login__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Login___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Login__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Errors__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Errors___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Errors__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_vPage_vPage__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_vPage_vPage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_vPage_vPage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_TableGrid__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_TableGrid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_TableGrid__);
+
 
 
 
@@ -4295,9 +4298,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 Vue.component('registration', __WEBPACK_IMPORTED_MODULE_2__components_Registration___default.a);
-Vue.component('errors', __WEBPACK_IMPORTED_MODULE_3__components_Errors___default.a);
-Vue.component('vPage', __WEBPACK_IMPORTED_MODULE_4__components_vPage_vPage___default.a);
-Vue.component('TableGrid', __WEBPACK_IMPORTED_MODULE_5__components_TableGrid___default.a);
+Vue.component('login', __WEBPACK_IMPORTED_MODULE_3__components_Login___default.a);
+Vue.component('errors', __WEBPACK_IMPORTED_MODULE_4__components_Errors___default.a);
+Vue.component('vPage', __WEBPACK_IMPORTED_MODULE_5__components_vPage_vPage___default.a);
+Vue.component('TableGrid', __WEBPACK_IMPORTED_MODULE_6__components_TableGrid___default.a);
 
 var app = new Vue({
     el: '#app',
@@ -4316,8 +4320,8 @@ var app = new Vue({
     },
 
     dataLoad: function dataLoad(adapter) {
-        if (adapter && typeof adapter === 'function') __WEBPACK_IMPORTED_MODULE_5__components_TableGrid___default.a.methods.dataLoad = adapter;
-        __WEBPACK_IMPORTED_MODULE_4__components_vPage_vPage___default.a.methods.dataLoad = adapter;
+        if (adapter && typeof adapter === 'function') __WEBPACK_IMPORTED_MODULE_6__components_TableGrid___default.a.methods.dataLoad = adapter;
+        __WEBPACK_IMPORTED_MODULE_5__components_vPage_vPage___default.a.methods.dataLoad = adapter;
     }
 });
 
@@ -16610,7 +16614,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.profile .profile-avatar[data-v-5e2892ac] {\n  float: left;\n  min-width: 100px;\n  max-width: 160px;\n}\n.profile .profile-avatar img[data-v-5e2892ac] {\n  border-radius: 20px;\n  border-width: 4px;\n}\n.profile .profile-info[data-v-5e2892ac] {\n  float: left;\n  min-width: 100px;\n  max-width: 450px;\n}\n", ""]);
+exports.push([module.i, "\n.profile .profile-avatar[data-v-5e2892ac] {\n  float: left;\n  min-width: 100px;\n  max-width: 160px;\n}\n.profile .profile-avatar img[data-v-5e2892ac] {\n  border-radius: 15px;\n}\n.profile .profile-info[data-v-5e2892ac] {\n  float: left;\n  min-width: 100px;\n  max-width: 450px;\n}\n", ""]);
 
 // exports
 
@@ -16721,10 +16725,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -16733,6 +16733,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            userId: this.$route.params.userId,
             user: {},
             student: {},
             teacher: {}
@@ -16756,7 +16757,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fetchUser: function fetchUser() {
             var _this = this;
 
-            __WEBPACK_IMPORTED_MODULE_0__models_User__["a" /* default */].fetch(function (user) {
+            __WEBPACK_IMPORTED_MODULE_0__models_User__["a" /* default */].fetch(this.userId, function (user) {
                 _this.user = user;
 
                 if (user.status.id === 1) {
@@ -16802,9 +16803,9 @@ var User = function () {
     }
 
     _createClass(User, null, [{
-        key: 'fetch',
-        value: function fetch(then) {
-            return axios.get('/users').then(function (response) {
+        key: "fetch",
+        value: function fetch(userId, then) {
+            return axios.get("/users/" + userId).then(function (response) {
                 return then(response.data);
             });
         }
@@ -16881,9 +16882,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "profile" }, [
     _c("section", { staticClass: "section" }, [
-      _c("h1", { staticClass: "title" }, [
-        _vm._v("\n            Профиль\n        ")
-      ]),
+      _c("h1", { staticClass: "title" }, [_vm._v("Профиль")]),
       _vm._v(" "),
       _c(
         "div",
@@ -17132,7 +17131,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -17243,67 +17241,62 @@ var render = function() {
       "section",
       { staticClass: "section" },
       [
-        _c("h1", { staticClass: "title" }, [
-          _vm._v("\n            Тесты\n        ")
-        ]),
-        _vm._v(" "),
-        _vm.tests.length
-          ? [
-              _c(
-                "form",
-                { staticClass: "is-inline-block", attrs: { id: "search" } },
-                [
-                  _c("div", { staticClass: "field" }, [
-                    _c("div", { staticClass: "control has-icons-left" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.searchQuery,
-                            expression: "searchQuery"
-                          }
-                        ],
-                        staticClass: "input",
-                        attrs: {
-                          name: "query",
-                          type: "text",
-                          placeholder: "Искать..."
-                        },
-                        domProps: { value: _vm.searchQuery },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.searchQuery = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm._m(0)
-                    ])
-                  ])
-                ]
-              )
-            ]
-          : _vm._e(),
+        _c("h1", { staticClass: "title" }, [_vm._v("Тесты")]),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "is-inline-block" },
+          { staticClass: "page-controls" },
           [
+            _vm.tests.length
+              ? _c(
+                  "form",
+                  {
+                    staticClass: "block is-inline-block",
+                    attrs: { id: "search" }
+                  },
+                  [
+                    _c("div", { staticClass: "field" }, [
+                      _c("div", { staticClass: "control has-icons-left" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.searchQuery,
+                              expression: "searchQuery"
+                            }
+                          ],
+                          staticClass: "input",
+                          attrs: {
+                            type: "text",
+                            name: "query",
+                            placeholder: "Искать..."
+                          },
+                          domProps: { value: _vm.searchQuery },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.searchQuery = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(0)
+                      ])
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _c(
               "router-link",
               {
-                staticClass: "is-inline-block",
+                staticClass: "button is-link is-outlined block is-inline-block",
                 attrs: { tag: "div", to: "/workspace/tests/create", exact: "" }
               },
-              [
-                _c("a", { staticClass: "button is-link is-outlined" }, [
-                  _vm._v("Добавить")
-                ])
-              ]
+              [_vm._v("\n                Добавить\n            ")]
             ),
             _vm._v(" "),
             _vm.tests.length
@@ -17311,7 +17304,7 @@ var render = function() {
                   _c(
                     "router-link",
                     {
-                      staticClass: "is-inline-block",
+                      staticClass: "button is-link is-outlined is-inline-block",
                       attrs: {
                         tag: "div",
                         to: "/workspace/tests/edit/" + _vm.selectedTest,
@@ -17319,16 +17312,17 @@ var render = function() {
                       }
                     },
                     [
-                      _c("a", { staticClass: "button is-link is-outlined" }, [
-                        _vm._v("Редактировать")
-                      ])
+                      _vm._v(
+                        "\n                    Редактировать\n                "
+                      )
                     ]
                   ),
                   _vm._v(" "),
                   _c(
                     "button",
                     {
-                      staticClass: "button is-success is-outlined",
+                      staticClass:
+                        "button is-success is-outlined is-inline-block",
                       on: {
                         click: function($event) {
                           _vm.changeTestState($event)
@@ -17345,7 +17339,8 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "button is-danger is-outlined",
+                      staticClass:
+                        "button is-danger is-outlined is-inline-block",
                       on: {
                         click: function($event) {
                           _vm.deleteTest($event)
@@ -17370,7 +17365,7 @@ var render = function() {
               on: { radioCheck: _vm.radioCheck }
             })
           : _c("section", { staticClass: "section" }, [
-              _c("p", { staticClass: "is-" }, [_vm._v("Список тестов пуст")])
+              _c("p", [_vm._v("Список тестов пуст")])
             ]),
         _vm._v(" "),
         _c("v-page", {
@@ -17378,7 +17373,7 @@ var render = function() {
           on: { "page-change": _vm.pageChange }
         })
       ],
-      2
+      1
     )
   ])
 }
@@ -17573,6 +17568,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -17617,6 +17629,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             $event.target.disabled = true;
+            $event.target.classList.add('is-loading');
 
             __WEBPACK_IMPORTED_MODULE_0__models_Test__["a" /* default */].store(this.test, function (data) {
                 if (!data.errors) {
@@ -17625,6 +17638,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 } else {
                     _this.errors = data.errors;
                     $event.target.disabled = false;
+                    $event.target.classList.remove('is-loading');
                 }
             });
         },
@@ -17661,341 +17675,361 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "create_test" }, [
-    _c("section", { staticClass: "section" }, [
-      _c("h2", { staticClass: "title" }, [_vm._v("Создание теста")]),
-      _vm._v(" "),
-      _c(
-        "form",
-        { staticClass: "form", attrs: { method: "POST" } },
-        [
-          _c("h2", { staticClass: "subtitle" }, [
-            _vm._v("Основная информация:")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "field" }, [
-            _c(
-              "label",
-              { staticClass: "label", attrs: { for: "speciality_id" } },
-              [_vm._v("Специальность")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "select" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.test.speciality_id,
-                      expression: "test.speciality_id"
-                    }
-                  ],
-                  attrs: {
-                    name: "speciality_id",
-                    id: "speciality_id",
-                    "aria-describedby": "testSpeciality",
-                    required: ""
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.test,
-                        "speciality_id",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                _vm._l(_vm.specialities, function(speciality) {
-                  return _c("option", { domProps: { value: speciality.id } }, [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(speciality.name) +
-                        "\n                        "
-                    )
-                  ])
-                })
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "field" }, [
-            _c("label", { staticClass: "label", attrs: { for: "theme_id" } }, [
-              _vm._v("Тема")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "select" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.test.theme_id,
-                      expression: "test.theme_id"
-                    }
-                  ],
-                  attrs: {
-                    name: "theme_id",
-                    id: "theme_id",
-                    "aria-describedby": "testTheme",
-                    required: ""
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.test,
-                        "theme_id",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                _vm._l(_vm.themes, function(theme) {
-                  return _c("option", { domProps: { value: theme.id } }, [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(theme.name) +
-                        "\n                        "
-                    )
-                  ])
-                })
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "field" }, [
-            _c("label", { staticClass: "label", attrs: { for: "name" } }, [
-              _vm._v("Название")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "control" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.test.name,
-                    expression: "test.name"
-                  }
-                ],
-                staticClass: "input",
-                attrs: {
-                  type: "text",
-                  name: "name",
-                  id: "name",
-                  "aria-describedby": "testName",
-                  required: ""
-                },
-                domProps: { value: _vm.test.name },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.test, "name", $event.target.value)
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "field" }, [
-            _c(
-              "label",
-              { staticClass: "label", attrs: { for: "number_questions" } },
-              [_vm._v("Количество вопросов")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "control" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.test.number_questions,
-                    expression: "test.number_questions"
-                  }
-                ],
-                staticClass: "input",
-                attrs: {
-                  type: "number",
-                  name: "number_questions",
-                  id: "number_questions",
-                  "aria-describedby": "testName",
-                  min: "1",
-                  max: "99",
-                  required: ""
-                },
-                domProps: { value: _vm.test.number_questions },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.test, "number_questions", $event.target.value)
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("h2", { staticClass: "subtitle" }, [_vm._v("Разбаловка:")]),
+    _vm.themes.length
+      ? _c("section", { staticClass: "section" }, [
+          _c("h1", { staticClass: "title" }, [_vm._v("Добавление теста")]),
           _vm._v(" "),
           _c(
-            "div",
-            { staticClass: "field is-grouped score-scales" },
-            _vm._l(_vm.test.score_scales, function(score_scale, index) {
-              return _c("div", { staticClass: "field" }, [
+            "form",
+            { staticClass: "form" },
+            [
+              _c("h2", { staticClass: "subtitle" }, [
+                _vm._v("Основная информация:")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "field" }, [
                 _c(
                   "label",
-                  {
-                    staticClass: "label",
-                    attrs: { for: "score-scale-" + index }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(score_scale.score) +
-                        " :\n                    "
-                    )
-                  ]
+                  { staticClass: "label", attrs: { for: "speciality_id" } },
+                  [_vm._v("Специальность")]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "control" }, [
-                  _vm._v("\n                        от "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: score_scale.from,
-                        expression: "score_scale.from"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: {
-                      type: "number",
-                      id: "score-scale-" + index,
-                      min: "1",
-                      max: "99",
-                      "aria-describedby": "scaleFrom"
-                    },
-                    domProps: { value: score_scale.from },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                _c("div", { staticClass: "select" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.test.speciality_id,
+                          expression: "test.speciality_id"
                         }
-                        _vm.$set(score_scale, "from", $event.target.value)
+                      ],
+                      attrs: {
+                        name: "speciality_id",
+                        id: "speciality_id",
+                        required: ""
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.test,
+                            "speciality_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
                       }
-                    }
-                  })
+                    },
+                    _vm._l(_vm.specialities, function(speciality) {
+                      return _c(
+                        "option",
+                        { domProps: { value: speciality.id } },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(speciality.name) +
+                              "\n                        "
+                          )
+                        ]
+                      )
+                    })
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "field" }, [
+                _c(
+                  "label",
+                  { staticClass: "label", attrs: { for: "theme_id" } },
+                  [_vm._v("Тема")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "select" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.test.theme_id,
+                          expression: "test.theme_id"
+                        }
+                      ],
+                      attrs: { name: "theme_id", id: "theme_id", required: "" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.test,
+                            "theme_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    _vm._l(_vm.themes, function(theme) {
+                      return _c("option", { domProps: { value: theme.id } }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(theme.name) +
+                            "\n                        "
+                        )
+                      ])
+                    })
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "field" }, [
+                _c("label", { staticClass: "label", attrs: { for: "name" } }, [
+                  _vm._v("Название")
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "control" }, [
-                  _vm._v("\n                        до "),
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: score_scale.to,
-                        expression: "score_scale.to"
+                        value: _vm.test.name,
+                        expression: "test.name"
                       }
                     ],
                     staticClass: "input",
                     attrs: {
-                      type: "number",
-                      min: "1",
-                      max: "99",
-                      "aria-describedby": "scaleTo"
+                      type: "text",
+                      name: "name",
+                      id: "name",
+                      required: ""
                     },
-                    domProps: { value: score_scale.to },
+                    domProps: { value: _vm.test.name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(score_scale, "to", $event.target.value)
+                        _vm.$set(_vm.test, "name", $event.target.value)
                       }
                     }
                   })
                 ])
-              ])
-            })
-          ),
-          _vm._v(" "),
-          _c("errors", { attrs: { errors: _vm.errors } }),
-          _vm._v(" "),
-          _c("div", { staticClass: "field is-grouped" }, [
-            _c("div", { staticClass: "control" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "button is-primary",
-                  attrs: { type: "submit" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.createTest($event)
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "field" }, [
+                _c(
+                  "label",
+                  { staticClass: "label", attrs: { for: "number_questions" } },
+                  [_vm._v("Количество вопросов")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "control" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.test.number_questions,
+                        expression: "test.number_questions"
+                      }
+                    ],
+                    staticClass: "input",
+                    attrs: {
+                      type: "number",
+                      name: "number_questions",
+                      id: "number_questions",
+                      min: "1",
+                      max: "99",
+                      required: ""
+                    },
+                    domProps: { value: _vm.test.number_questions },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.test,
+                          "number_questions",
+                          $event.target.value
+                        )
+                      }
                     }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                        Создать\n                    "
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("h2", { staticClass: "subtitle" }, [_vm._v("Разбалловка:")]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "field is-grouped score-scales" },
+                _vm._l(_vm.test.score_scales, function(score_scale, index) {
+                  return _c("div", { staticClass: "field" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "label",
+                        attrs: { for: "score-scale-" + index }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(score_scale.score) +
+                            " :\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "control" }, [
+                      _vm._v("\n                        от "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: score_scale.from,
+                            expression: "score_scale.from"
+                          }
+                        ],
+                        staticClass: "input",
+                        attrs: {
+                          type: "number",
+                          min: "1",
+                          max: "99",
+                          id: "score-scale-" + index
+                        },
+                        domProps: { value: score_scale.from },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(score_scale, "from", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "control" }, [
+                      _vm._v("\n                        до "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: score_scale.to,
+                            expression: "score_scale.to"
+                          }
+                        ],
+                        staticClass: "input",
+                        attrs: { type: "number", min: "1", max: "99" },
+                        domProps: { value: score_scale.to },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(score_scale, "to", $event.target.value)
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                })
+              ),
+              _vm._v(" "),
+              _c("errors", { attrs: { errors: _vm.errors } }),
+              _vm._v(" "),
+              _c("div", { staticClass: "field is-grouped" }, [
+                _c("div", { staticClass: "control" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.createTest($event)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        Добавить\n                    "
+                      )
+                    ]
                   )
-                ]
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "control" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "button is-link is-outlined",
+                        attrs: { to: "/workspace/tests", exact: "" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        Назад\n                    "
+                        )
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ],
+            1
+          )
+        ])
+      : _c(
+          "section",
+          { staticClass: "section" },
+          [
+            _c("h1", { staticClass: "title" }, [_vm._v("Добавление теста")]),
+            _vm._v(" "),
+            _c("p", { staticClass: "block" }, [
+              _vm._v(
+                "Список тем пуст, для добавления теста необходимо иметь хотябы одну тему."
               )
             ]),
             _vm._v(" "),
             _c(
-              "div",
-              { staticClass: "control" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "button is-link is-outlined",
-                    attrs: { to: "/workspace/tests", exact: "" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Назад\n                    "
-                    )
-                  ]
-                )
-              ],
-              1
+              "router-link",
+              {
+                staticClass: "button is-link is-outlined block is-inline-block",
+                attrs: { tag: "div", to: "/workspace/themes/create", exact: "" }
+              },
+              [_vm._v("\n            Добавить тему\n        ")]
             )
-          ])
-        ],
-        1
-      )
-    ])
+          ],
+          1
+        )
   ])
 }
 var staticRenderFns = []
@@ -18109,6 +18143,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Theme__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_Speciality__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_Question__ = __webpack_require__(16);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -18452,7 +18499,7 @@ var render = function() {
         ? _c("div", { staticClass: "content" }, [
             _c(
               "form",
-              { staticClass: "form", attrs: { method: "POST" } },
+              { staticClass: "form" },
               [
                 _c("h4", [_vm._v("Основная информация:")]),
                 _vm._v(" "),
@@ -18478,7 +18525,6 @@ var render = function() {
                         attrs: {
                           name: "speciality_id",
                           id: "speciality_id",
-                          "aria-describedby": "testSpeciality",
                           required: ""
                         },
                         on: {
@@ -18540,7 +18586,6 @@ var render = function() {
                         attrs: {
                           name: "theme_id",
                           id: "theme_id",
-                          "aria-describedby": "testTheme",
                           required: ""
                         },
                         on: {
@@ -18598,7 +18643,6 @@ var render = function() {
                         type: "text",
                         name: "name",
                         id: "name",
-                        "aria-describedby": "testName",
                         required: ""
                       },
                       domProps: { value: _vm.test.name },
@@ -18639,7 +18683,6 @@ var render = function() {
                         type: "number",
                         name: "number_questions",
                         id: "number_questions",
-                        "aria-describedby": "testName",
                         min: "1",
                         max: "99",
                         required: ""
@@ -18661,7 +18704,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("h4", { staticClass: "subtitle" }, [_vm._v("Разбаловка:")]),
+                _c("h4", { staticClass: "subtitle" }, [_vm._v("Разбалловка:")]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -18697,10 +18740,9 @@ var render = function() {
                           staticClass: "input",
                           attrs: {
                             type: "number",
-                            id: "score-scale-" + index,
                             min: "1",
                             max: "99",
-                            "aria-describedby": "scaleFrom"
+                            id: "score-scale-" + index
                           },
                           domProps: { value: score_scale.from },
                           on: {
@@ -18726,12 +18768,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "input",
-                          attrs: {
-                            type: "number",
-                            min: "1",
-                            max: "99",
-                            "aria-describedby": "scaleTo"
-                          },
+                          attrs: { type: "number", min: "1", max: "99" },
                           domProps: { value: score_scale.to },
                           on: {
                             input: function($event) {
@@ -18866,93 +18903,108 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
+          !_vm.questions.length
+            ? _c("div", [_vm._v("Список вопросов пуст")])
+            : _vm._e(),
+          _vm._v(" "),
           _vm._l(_vm.questions, function(question, index) {
-            return _c(
-              "div",
-              { staticClass: "content" },
-              [
-                _c("p", [
-                  _vm._v(_vm._s(index + 1) + ". " + _vm._s(question.question))
-                ]),
-                _vm._v(" "),
-                question.answer_free
-                  ? [
-                      _c("h6", [
-                        _vm._v("Ответ: "),
+            return _vm.questions.length
+              ? _c(
+                  "div",
+                  { staticClass: "content" },
+                  [
+                    _c("p", [
+                      _vm._v(
+                        _vm._s(index + 1) + ". " + _vm._s(question.question)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    question.answer_free
+                      ? [
+                          _c("h6", [
+                            _vm._v("Ответ:\n                        "),
+                            _c(
+                              "span",
+                              { staticStyle: { "font-weight": "normal" } },
+                              [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(question.answer_free.answer) +
+                                    "\n                        "
+                                )
+                              ]
+                            )
+                          ])
+                        ]
+                      : question.answer_variants.length
+                        ? _c(
+                            "div",
+                            { staticClass: "content" },
+                            [
+                              _c("h6", [_vm._v("Ответы:")]),
+                              _vm._v(" "),
+                              _vm._l(question.answer_variants, function(
+                                answer
+                              ) {
+                                return _c("div", [
+                                  question.question_type_id === 1
+                                    ? _c("input", {
+                                        attrs: {
+                                          type: "radio",
+                                          name: "correct_answer_" + index,
+                                          disabled: ""
+                                        },
+                                        domProps: {
+                                          checked: answer.correct_answer
+                                        }
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  question.question_type_id === 2
+                                    ? _c("input", {
+                                        attrs: {
+                                          type: "checkbox",
+                                          name: "correct_answer_" + index,
+                                          disabled: ""
+                                        },
+                                        domProps: {
+                                          checked: answer.correct_answer
+                                        }
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v(_vm._s(answer.answer))])
+                                ])
+                              })
+                            ],
+                            2
+                          )
+                        : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "field" }, [
+                      _c("div", { staticClass: "control" }, [
                         _c(
-                          "span",
-                          { staticStyle: { "font-weight": "normal" } },
+                          "button",
+                          {
+                            staticClass: "button is-danger is-outlined",
+                            on: {
+                              click: function($event) {
+                                _vm.deleteQuestion(index, question.id, $event)
+                              }
+                            }
+                          },
                           [
                             _vm._v(
-                              "\n                        " +
-                                _vm._s(question.answer_free.answer)
+                              "\n                            Удалить\n                        "
                             )
                           ]
                         )
                       ])
-                    ]
-                  : question.answer_variants.length
-                    ? _c(
-                        "div",
-                        { staticClass: "content" },
-                        [
-                          _c("h6", [_vm._v("Ответы:")]),
-                          _vm._v(" "),
-                          _vm._l(question.answer_variants, function(answer) {
-                            return _c("div", [
-                              question.question_type_id === 1
-                                ? _c("input", {
-                                    attrs: {
-                                      type: "radio",
-                                      name: "correct_answer_" + index,
-                                      disabled: ""
-                                    },
-                                    domProps: { checked: answer.correct_answer }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
-                              question.question_type_id === 2
-                                ? _c("input", {
-                                    attrs: {
-                                      type: "checkbox",
-                                      name: "correct_answer_" + index,
-                                      disabled: ""
-                                    },
-                                    domProps: { checked: answer.correct_answer }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _c("span", [_vm._v(_vm._s(answer.answer))])
-                            ])
-                          })
-                        ],
-                        2
-                      )
-                    : _vm._e(),
-                _vm._v(" "),
-                _c("div", { staticClass: "field" }, [
-                  _c("div", { staticClass: "control" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "button is-danger is-outlined",
-                        on: {
-                          click: function($event) {
-                            _vm.deleteQuestion(index, question.id, $event)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                            Удалить\n                        "
-                        )
-                      ]
-                    )
-                  ])
-                ])
-              ],
-              2
-            )
+                    ])
+                  ],
+                  2
+                )
+              : _vm._e()
           })
         ],
         2
@@ -19187,6 +19239,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -19276,7 +19331,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "create_question" }, [
+  return _c("div", { staticClass: "create-question" }, [
     _c("section", { staticClass: "section" }, [
       _c("h1", { staticClass: "title" }, [_vm._v("Добавление вопроса")]),
       _vm._v(" "),
@@ -19306,7 +19361,6 @@ var render = function() {
                   attrs: {
                     name: "question_type_id",
                     id: "question_type_id",
-                    "aria-describedby": "questionType",
                     required: ""
                   },
                   on: {
@@ -19366,7 +19420,6 @@ var render = function() {
                 attrs: {
                   name: "question",
                   id: "question",
-                  "aria-describedby": "questionText",
                   rows: "4",
                   required: ""
                 },
@@ -19406,7 +19459,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                            Добавить ответ\n                        "
+                            "\n                            Добавить\n                        "
                           )
                         ]
                       )
@@ -19425,8 +19478,6 @@ var render = function() {
                                     attrs: {
                                       type: "radio",
                                       name: "correct_answer",
-                                      "aria-describedby":
-                                        "correctAnswerSelector",
                                       checked: "",
                                       required: ""
                                     },
@@ -19441,8 +19492,6 @@ var render = function() {
                                       attrs: {
                                         type: "radio",
                                         name: "correct_answer",
-                                        "aria-describedby":
-                                          "correctAnswerSelector",
                                         required: ""
                                       },
                                       on: {
@@ -19465,9 +19514,7 @@ var render = function() {
                                     ],
                                     attrs: {
                                       type: "checkbox",
-                                      name: "correct_answer",
-                                      "aria-describedby":
-                                        "correctAnswerSelector"
+                                      name: "correct_answer"
                                     },
                                     domProps: {
                                       checked: Array.isArray(
@@ -19524,11 +19571,7 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "input",
-                                attrs: {
-                                  type: "text",
-                                  "aria-describedby": "answerBody",
-                                  required: ""
-                                },
+                                attrs: { type: "text", required: "" },
                                 domProps: { value: answer.answer },
                                 on: {
                                   input: function($event) {
@@ -19593,7 +19636,6 @@ var render = function() {
                       attrs: {
                         type: "text",
                         name: "answer_body",
-                        "aria-describedby": "answerBody",
                         required: ""
                       },
                       domProps: { value: _vm.question.answer },
@@ -19803,6 +19845,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -19890,67 +19933,62 @@ var render = function() {
       "section",
       { staticClass: "section" },
       [
-        _c("h1", { staticClass: "title" }, [
-          _vm._v("\n            Темы\n        ")
-        ]),
-        _vm._v(" "),
-        _vm.themes.length
-          ? [
-              _c(
-                "form",
-                { staticClass: "is-inline-block", attrs: { id: "search" } },
-                [
-                  _c("div", { staticClass: "field" }, [
-                    _c("div", { staticClass: "control has-icons-left" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.searchQuery,
-                            expression: "searchQuery"
-                          }
-                        ],
-                        staticClass: "input",
-                        attrs: {
-                          name: "query",
-                          type: "text",
-                          placeholder: "Искать..."
-                        },
-                        domProps: { value: _vm.searchQuery },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.searchQuery = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm._m(0)
-                    ])
-                  ])
-                ]
-              )
-            ]
-          : _vm._e(),
+        _c("h1", { staticClass: "title" }, [_vm._v("Темы")]),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "is-inline-block" },
+          { staticClass: "page-controls" },
           [
+            _vm.themes.length
+              ? _c(
+                  "form",
+                  {
+                    staticClass: "block is-inline-block",
+                    attrs: { id: "search" }
+                  },
+                  [
+                    _c("div", { staticClass: "field" }, [
+                      _c("div", { staticClass: "control has-icons-left" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.searchQuery,
+                              expression: "searchQuery"
+                            }
+                          ],
+                          staticClass: "input",
+                          attrs: {
+                            type: "text",
+                            name: "query",
+                            placeholder: "Искать..."
+                          },
+                          domProps: { value: _vm.searchQuery },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.searchQuery = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(0)
+                      ])
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _c(
               "router-link",
               {
-                staticClass: "is-inline-block",
+                staticClass: "button is-link is-outlined block is-inline-block",
                 attrs: { tag: "div", to: "/workspace/themes/create", exact: "" }
               },
-              [
-                _c("a", { staticClass: "button is-link is-outlined" }, [
-                  _vm._v("Добавить")
-                ])
-              ]
+              [_vm._v("\n                Добавить\n            ")]
             ),
             _vm._v(" "),
             _vm.themes.length
@@ -19958,7 +19996,8 @@ var render = function() {
                   _c(
                     "router-link",
                     {
-                      staticClass: "is-inline-block",
+                      staticClass:
+                        "button is-link is-outlined block is-inline-block",
                       attrs: {
                         tag: "div",
                         to: "/workspace/themes/edit/" + _vm.selectedTheme,
@@ -19966,16 +20005,17 @@ var render = function() {
                       }
                     },
                     [
-                      _c("a", { staticClass: "button is-link is-outlined" }, [
-                        _vm._v("Редактировать")
-                      ])
+                      _vm._v(
+                        "\n                    Редактировать\n                "
+                      )
                     ]
                   ),
                   _vm._v(" "),
                   _c(
                     "button",
                     {
-                      staticClass: "button is-danger is-outlined",
+                      staticClass:
+                        "button is-danger is-outlined block is-inline-block",
                       on: {
                         click: function($event) {
                           _vm.deleteTheme($event)
@@ -20000,7 +20040,7 @@ var render = function() {
               on: { radioCheck: _vm.radioCheck }
             })
           : _c("section", { staticClass: "section" }, [
-              _c("p", { staticClass: "is-" }, [_vm._v("Список тем пуст")])
+              _c("p", [_vm._v("Список тем пуст")])
             ]),
         _vm._v(" "),
         _c("v-page", {
@@ -20008,7 +20048,7 @@ var render = function() {
           on: { "page-change": _vm.pageChange }
         })
       ],
-      2
+      1
     )
   ])
 }
@@ -20177,6 +20217,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -20254,15 +20304,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "create_theme" }, [
+  return _c("div", { staticClass: "create-theme" }, [
     _c("section", { staticClass: "section" }, [
-      _c("h1", { staticClass: "title" }, [
-        _vm._v("\n            Добавление темы\n        ")
-      ]),
+      _c("h1", { staticClass: "title" }, [_vm._v("Добавление темы")]),
       _vm._v(" "),
       _c(
         "form",
-        { staticClass: "form", attrs: { method: "POST" } },
+        { staticClass: "form" },
         [
           _c("div", { staticClass: "field" }, [
             _c("label", { staticClass: "label", attrs: { for: "cicle" } }, [
@@ -20282,12 +20330,7 @@ var render = function() {
                         expression: "cicleId"
                       }
                     ],
-                    attrs: {
-                      name: "cicle",
-                      id: "cicle",
-                      "aria-describedby": "disciplineCicle",
-                      required: ""
-                    },
+                    attrs: { name: "cicle", id: "cicle", required: "" },
                     on: {
                       input: function($event) {
                         _vm.fetchDisciplines({}, $event)
@@ -20344,7 +20387,6 @@ var render = function() {
                     attrs: {
                       name: "discipline_id",
                       id: "discipline_id",
-                      "aria-describedby": "themeDiscipline",
                       required: ""
                     },
                     on: {
@@ -20401,13 +20443,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "input",
-                attrs: {
-                  type: "text",
-                  name: "name",
-                  id: "name",
-                  "aria-describedby": "themeName",
-                  required: ""
-                },
+                attrs: { type: "text", name: "name", id: "name", required: "" },
                 domProps: { value: _vm.theme.name },
                 on: {
                   input: function($event) {
@@ -20441,7 +20477,6 @@ var render = function() {
                   type: "number",
                   name: "course",
                   id: "course",
-                  "aria-describedby": "themeCourse",
                   min: "1",
                   max: "4",
                   required: ""
@@ -20714,6 +20749,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -20818,9 +20859,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "edit_theme" }, [
     _c("section", { staticClass: "section" }, [
-      _c("h1", { staticClass: "title" }, [
-        _vm._v("\n            Редактирование темы\n        ")
-      ]),
+      _c("h1", { staticClass: "title" }, [_vm._v("Редактирование темы")]),
       _vm._v(" "),
       !_vm.hasErrors
         ? _c("div", { ref: "notify", staticClass: "notification is-primary" }, [
@@ -20854,12 +20893,7 @@ var render = function() {
                         expression: "cicleId"
                       }
                     ],
-                    attrs: {
-                      name: "cicle",
-                      id: "cicle",
-                      "aria-describedby": "disciplineCicle",
-                      required: ""
-                    },
+                    attrs: { name: "cicle", id: "cicle", required: "" },
                     on: {
                       input: function($event) {
                         _vm.fetchDisciplines($event)
@@ -20916,7 +20950,6 @@ var render = function() {
                     attrs: {
                       name: "discipline_id",
                       id: "discipline_id",
-                      "aria-describedby": "themeDiscipline",
                       required: ""
                     },
                     on: {
@@ -20973,13 +21006,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "input",
-                attrs: {
-                  type: "text",
-                  name: "name",
-                  id: "name",
-                  "aria-describedby": "themeName",
-                  required: ""
-                },
+                attrs: { type: "text", name: "name", id: "name", required: "" },
                 domProps: { value: _vm.theme.name },
                 on: {
                   input: function($event) {
@@ -21062,7 +21089,6 @@ var render = function() {
                 _c(
                   "router-link",
                   {
-                    ref: "link_back",
                     staticClass: "button is-link is-outlined",
                     attrs: { to: "/workspace/themes", exact: "" }
                   },
@@ -21312,10 +21338,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -21326,12 +21348,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             specialities: []
         };
     },
-    created: function created() {
-        var _this = this;
 
-        __WEBPACK_IMPORTED_MODULE_0__models_Speciality__["a" /* default */].fetchAll(function (specialities) {
-            _this.specialities = specialities;
-        });
+
+    methods: {
+        fetchSpecialities: function fetchSpecialities() {
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_0__models_Speciality__["a" /* default */].fetchAll(function (specialities) {
+                _this.specialities = specialities;
+            });
+        }
+    },
+
+    created: function created() {
+        this.fetchSpecialities();
     }
 });
 
@@ -21343,7 +21373,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "registration_form" }, [
+  return _c("div", { staticClass: "registration-form" }, [
     _c("section", { staticClass: "section" }, [
       _c("h1", { staticClass: "title" }, [_vm._v("Регистрация")]),
       _vm._v(" "),
@@ -21379,12 +21409,7 @@ var render = function() {
                       expression: "userStatus"
                     }
                   ],
-                  attrs: {
-                    name: "status_id",
-                    id: "status_id",
-                    "aria-describedby": "userStatus",
-                    required: ""
-                  },
+                  attrs: { name: "status_id", id: "status_id", required: "" },
                   on: {
                     change: function($event) {
                       var $$selectedVal = Array.prototype.filter
@@ -21442,7 +21467,6 @@ var render = function() {
                         attrs: {
                           name: "speciality_id",
                           id: "speciality_id",
-                          "aria-describedby": "studentSpeciality",
                           required: ""
                         }
                       },
@@ -21508,13 +21532,7 @@ var staticRenderFns = [
       _c("div", { staticClass: "control" }, [
         _c("input", {
           staticClass: "input",
-          attrs: {
-            type: "text",
-            name: "surname",
-            id: "surname",
-            "aria-describedby": "userSurname",
-            required: ""
-          }
+          attrs: { type: "text", name: "surname", id: "surname", required: "" }
         })
       ])
     ])
@@ -21531,13 +21549,7 @@ var staticRenderFns = [
       _c("div", { staticClass: "control" }, [
         _c("input", {
           staticClass: "input",
-          attrs: {
-            type: "text",
-            name: "name",
-            id: "name",
-            "aria-describedby": "userName",
-            required: ""
-          }
+          attrs: { type: "text", name: "name", id: "name", required: "" }
         })
       ])
     ])
@@ -21558,7 +21570,6 @@ var staticRenderFns = [
             type: "text",
             name: "patronymic",
             id: "patronymic",
-            "aria-describedby": "userPatronymic",
             required: ""
           }
         })
@@ -21577,13 +21588,7 @@ var staticRenderFns = [
       _c("div", { staticClass: "control" }, [
         _c("input", {
           staticClass: "input",
-          attrs: {
-            type: "email",
-            name: "email",
-            id: "email",
-            "aria-describedby": "userEmail",
-            required: ""
-          }
+          attrs: { type: "email", name: "email", id: "email", required: "" }
         })
       ])
     ])
@@ -21604,7 +21609,6 @@ var staticRenderFns = [
             type: "password",
             name: "password",
             id: "password",
-            "aria-describedby": "userPassword",
             required: ""
           }
         })
@@ -21629,7 +21633,6 @@ var staticRenderFns = [
             type: "password",
             name: "password_confirmation",
             id: "password_confirmation",
-            "aria-describedby": "passwordСonfirmation",
             required: ""
           }
         })
@@ -21652,7 +21655,6 @@ var staticRenderFns = [
             name: "speciality",
             id: "speciality",
             rows: "4",
-            "aria-describedby": "teacherSpeciality",
             required: ""
           }
         })
@@ -21671,13 +21673,7 @@ var staticRenderFns = [
       _c("div", { staticClass: "control" }, [
         _c("input", {
           staticClass: "input",
-          attrs: {
-            type: "text",
-            name: "group",
-            id: "group",
-            "aria-describedby": "studentGroup",
-            required: ""
-          }
+          attrs: { type: "text", name: "group", id: "group", required: "" }
         })
       ])
     ])
@@ -21698,7 +21694,6 @@ var staticRenderFns = [
             type: "number",
             name: "course",
             id: "course",
-            "aria-describedby": "studentCourse",
             min: "1",
             max: "4",
             value: "1",
@@ -21725,13 +21720,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("input", {
             staticClass: "file-input",
-            attrs: {
-              type: "file",
-              name: "avatar",
-              id: "avatar",
-              "aria-describedby": "userAvatar",
-              required: ""
-            }
+            attrs: { type: "file", name: "avatar", id: "avatar", required: "" }
           }),
           _vm._v(" "),
           _c("span", { staticClass: "file-cta" }, [
@@ -22775,6 +22764,152 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(103)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Login.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-01e7f602", Component.options)
+  } else {
+    hotAPI.reload("data-v-01e7f602", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "authorization-form" }, [
+    _c("section", { staticClass: "section" }, [
+      _c("h1", { staticClass: "title" }, [_vm._v("Войти")]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "form",
+        { staticClass: "form", attrs: { method: "POST", action: "/login" } },
+        [
+          _vm._t("csrf"),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2),
+          _vm._v(" "),
+          _vm._t("errors"),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "button is-primary", attrs: { type: "submit" } },
+            [_vm._v("Войти")]
+          )
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h2", { staticClass: "subtitle" }, [
+      _vm._v("Войти или "),
+      _c("a", { attrs: { href: "/register" } }, [_vm._v("Зарегистрироваться")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "field" }, [
+      _c("label", { staticClass: "label", attrs: { for: "email" } }, [
+        _vm._v("E-mail")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "control" }, [
+        _c("input", {
+          staticClass: "input",
+          attrs: { type: "email", name: "email", id: "email", required: "" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "field" }, [
+      _c("label", { staticClass: "label", attrs: { for: "password" } }, [
+        _vm._v("Пароль")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "control" }, [
+        _c("input", {
+          staticClass: "input",
+          attrs: {
+            type: "password",
+            name: "password",
+            id: "password",
+            required: ""
+          }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-01e7f602", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

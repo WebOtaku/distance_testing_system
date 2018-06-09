@@ -177,13 +177,11 @@ class ThemeController extends Controller
                 'discipline_id' => $request->discipline_id
             ]);
 
-            $theme = Theme::find($theme->id)->update([
+            Theme::find($theme->id)->update([
                 'discipline_teacher_id' => $discipline_teacher->id,
                 'name' => $request->name,
                 'course' => $request->course
             ]);
-
-            return response()->json($theme);
         }
     }
 
