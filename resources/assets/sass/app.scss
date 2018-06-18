@@ -55,3 +55,7 @@
 .content h4 {
     font-weight: normal;
 }
+
+.title:not(:last-child) {
+    margin-bottom: 1.25em;
+}

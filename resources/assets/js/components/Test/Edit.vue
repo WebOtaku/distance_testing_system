@@ -2,7 +2,7 @@
 
     <div class="edit_test">
 
-        <section class="section">
+        <section class="section" v-if="testFetched">
 
             <h1 class="title">Редактирование теста</h1>
 
@@ -11,7 +11,7 @@
                 Тест был успешно обновлён
             </div>
 
-            <div class="content" v-if="testFetched">
+            <div class="content">
 
                 <form class="form">
 
@@ -189,9 +189,17 @@
 
                     </div>
 
-                    <div class="field">
+                    <div class="field is-grouped">
                         <div class="control">
-                            <button class="button is-danger is-outlined"
+                            <router-link class="button is-link is-outlined block is-inline-block"
+                                         :to="`/workspace/tests/edit/${testId}/question/${question.id}`" exact
+                            >
+                                Редактировать
+                            </router-link>
+                        </div>
+
+                        <div class="control">
+                            <button class="button is-danger is-outlined block is-inline-block"
                                     @click="deleteQuestion(index, question.id, $event)"
                             >
                                 Удалить

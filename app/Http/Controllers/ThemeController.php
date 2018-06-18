@@ -51,11 +51,6 @@ class ThemeController extends Controller
                 })->get()
             );
         }
-        else {
-            return response(
-                Theme::all()
-            );
-        }
     }
 
     /**

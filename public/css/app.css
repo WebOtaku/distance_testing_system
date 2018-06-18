@@ -11567,3 +11567,7 @@ label.panel-block:hover {
   font-weight: normal;
 }
 
+.title:not(:last-child) {
+  margin-bottom: 1.25em;
+}
+

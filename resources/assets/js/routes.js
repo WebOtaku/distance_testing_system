@@ -23,7 +23,11 @@ let routes = [
     },
     {
         path: '/workspace/tests/edit/:testId/question',
-        component: require('./components/Question')
+        component: require('./components/Question/Create')
+    },
+    {
+        path: '/workspace/tests/edit/:testId/question/:questionId',
+        component: require('./components/Question/Edit')
     },
     {
         path: '/workspace/themes',

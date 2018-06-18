@@ -80,6 +80,8 @@ class AnswerVariantController extends Controller
      */
     public function destroy(AnswerVariant $answerVariant)
     {
-        //
+        return response()->json(
+            AnswerVariant::find($answerVariant->id)->delete()
+        );
     }
 }

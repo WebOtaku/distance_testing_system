@@ -25,8 +25,6 @@ class Test extends Model
         'created_at', 'updated_at'
     ];
 
-    /*TODO: Сделать так что бы обновлялось поле updated_at*/
-
     public function speciality()
     {
         return $this->belongsTo(Speciality::class);

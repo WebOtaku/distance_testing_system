@@ -117,7 +117,7 @@ class RegistrationController extends Controller
 
         $path = $request->file('avatar')->store('public/avatars');
 
-        $path = str_replace('public', '', $path);
+        $path = str_replace('public/', '', $path);
 
         $avatar = ['avatar' => $path];
 

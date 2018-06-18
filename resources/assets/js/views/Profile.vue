@@ -11,7 +11,7 @@
                 <template v-if="hasUser">
 
                     <div class="profile-avatar">
-                        <img :src="`/storage${user.avatar}`" alt="аватар">
+                        <img :src="`/storage/${user.avatar}`" alt="аватар">
                     </div>
 
                     <ul class="profile-info">
@@ -125,19 +125,35 @@
 </script>
 
 <style lang="scss" scoped>
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
     .profile .profile-avatar {
-        float: left;
         min-width: 100px;
         max-width: 160px;
     }
 
     .profile .profile-avatar img {
-        border-radius: 15px;
+        border: 2px solid #00D1B2;
+        border-radius: 8px;
     }
 
     .profile .profile-info {
-        float: left;
-        min-width: 100px;
-        max-width: 450px;
+        flex: 0 1 416px;
+        margin-left: 1em;
+        list-style: none;
+        font-size: 1.15em;
+    }
+
+    @media screen and (max-width: 660px) {
+        .content {
+            justify-content: center;
+        }
+
+        .profile .profile-info {
+            text-align: center;
+        }
     }
 </style>

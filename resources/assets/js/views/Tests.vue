@@ -23,7 +23,7 @@
 
                 </form>
 
-                <router-link tag="div" class="button is-link is-outlined block is-inline-block"
+                <router-link class="button is-link is-outlined block is-inline-block"
                              to="/workspace/tests/create" exact
                 >
                     Добавить
@@ -31,19 +31,23 @@
 
                 <template v-if="tests.length">
 
-                    <router-link tag="div" class="button is-link is-outlined is-inline-block"
+                    <router-link class="button is-link is-outlined block is-inline-block"
                                  :to="`/workspace/tests/edit/${selectedTest}`" exact
                     >
                         Редактировать
                     </router-link>
 
-                    <button class="button is-success is-outlined is-inline-block"
+                    <!-- TODO: Проверять есть ли вопросы у вабрнного теста если их нет не разрешать изменение статуса на активный -->
+
+                    <button class="button is-success is-outlined block is-inline-block"
                             @click="changeTestState($event)"
                     >
                         Изменить статус
                     </button>
 
-                    <button class="button is-danger is-outlined is-inline-block"
+                    <!-- TODO: Сделать всплывающее окно для подтверждения удаления -->
+
+                    <button class="button is-danger is-outlined block is-inline-block"
                             @click="deleteTest($event)"
                     >
                         Удалить
@@ -52,6 +56,8 @@
                 </template>
 
             </div>
+
+            <!-- TODO: Cделать колесо загрузки на страницах с таблицей -->
 
             <table-grid
                     v-if="tests.length"

@@ -23,7 +23,15 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1)
+        {
+            return response(
+                Question::where('test_id', request()->testId)
+                    ->with('answerVariants', 'answerFree')->get()
+            );
+        }
     }
 
     /**
@@ -54,7 +62,7 @@ class QuestionController extends Controller
                     'test_id' => 'required|numeric',
                     'question_type_id' => 'required|numeric',
                     'question' => 'required|string|min:10',
-                    'answer' => 'required|string|min:1'
+                    'answer_free.answer' => 'required|string|min:1'
                 ]);
 
                 if($validation->fails())
@@ -73,7 +81,7 @@ class QuestionController extends Controller
 
                 AnswerFree::create([
                     'question_id' => $question->id,
-                    'answer' => $request->answer
+                    'answer' => $request->answer_free['answer']
                 ]);
             }
             else
@@ -82,7 +90,7 @@ class QuestionController extends Controller
                     'test_id' => 'required|numeric',
                     'question_type_id' => 'required|numeric',
                     'question' => 'required|string|min:10',
-                    'answers.*.answer' => 'required|string|min:1'
+                    'answer_variants.*.answer' => 'required|string|min:1'
                 ]);
 
                 if($validation->fails())
@@ -99,7 +107,7 @@ class QuestionController extends Controller
                     'question' => $request->question
                 ]);
 
-                foreach ($request->answers as $val) {
+                foreach ($request->answer_variants as $val) {
                     AnswerVariant::create([
                         'question_id' => $question->id,
                         'answer' => $val['answer'],
@@ -113,17 +121,19 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Test $test
+     * @param  \App\Question $question
      * @return \Illuminate\Http\Response
      */
-    public function show(Test $test)
+    public function show(Question $question)
     {
         $user_status = auth()->user()->status->id;
 
         if ($user_status === 1)
         {
-            return Question::where('test_id', $test->id)
-                ->with('answerVariants', 'answerFree')->get();
+            return response(
+                Question::with('answerVariants', 'answerFree')
+                    ->findOrFail($question->id)
+            );
         }
     }
 
@@ -147,7 +157,82 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $user_status = auth()->user()->status->id;
+
+        if ($user_status === 1)
+        {
+            if ((int)$request->question_type_id === 3)
+            {
+                $validation = Validator::make($request->all(), [
+                    'test_id' => 'required|numeric',
+                    'question_type_id' => 'required|numeric',
+                    'question' => 'required|string|min:10',
+                    'answer_free.answer' => 'required|string|min:1'
+                ]);
+
+                if($validation->fails())
+                {
+                    return json_encode([
+                        'errors' => $validation->errors()->getMessages(),
+                        'code' => 422
+                    ]);
+                }
+
+                Question::find($question->id)->update([
+                    'test_id' => $request->test_id,
+                    'question_type_id' => $request->question_type_id,
+                    'question' => $request->question
+                ]);
+
+                if ($question->question_type_id !== 3) {
+                    AnswerVariant::where('question_id', $question->id)->delete();
+                }
+
+                $id = (isset($request->answer_free['id']))? $request->answer_free['id'] : 0;
+
+                AnswerFree::updateOrCreate(['id' => $id], [
+                    'question_id' => $request->id,
+                    'answer' => $request->answer_free['answer']
+                ]);
+            }
+            else
+            {
+                $validation = Validator::make($request->all(), [
+                    'test_id' => 'required|numeric',
+                    'question_type_id' => 'required|numeric',
+                    'question' => 'required|string|min:10',
+                    'answer_variants.*.answer' => 'required|string|min:1'
+                ]);
+
+                if($validation->fails())
+                {
+                    return json_encode([
+                        'errors' => $validation->errors()->getMessages(),
+                        'code' => 422
+                    ]);
+                }
+
+                Question::find($question->id)->update([
+                    'test_id' => $request->test_id,
+                    'question_type_id' => $request->question_type_id,
+                    'question' => $request->question
+                ]);
+
+                if ($question->question_type_id === 3) {
+                    AnswerFree::where('question_id', $question->id)->delete();
+                }
+
+                foreach ($request->answer_variants as $val) {
+                    $id = (isset($val['id']))?  $val['id'] : 0;
+
+                    AnswerVariant::updateOrCreate(['id' => $id], [
+                        'question_id' => $question->id,
+                        'answer' => $val['answer'],
+                        'correct_answer' => $val['correct_answer']
+                    ]);
+                }
+            }
+        }
     }
 
     /**

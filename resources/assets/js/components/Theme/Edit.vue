@@ -2,7 +2,7 @@
 
     <div class="edit_theme">
 
-        <section class="section">
+        <section class="section" v-if="themeFetched">
 
             <h1 class="title">Редактирование темы</h1>
 
@@ -11,7 +11,7 @@
                 Тема была успешно обновлена
             </div>
 
-            <form method="POST" class="form">
+            <form class="form">
 
                 <div class="field">
                     <label class="label" for="cicle">Цикл</label>
@@ -107,11 +107,7 @@
             return {
                 cicleId: 0,
                 themeId: this.$route.params.themeId,
-                theme: {
-                    discipline_id: 0,
-                    name: '',
-                    course: 1
-                },
+                theme: {},
                 errors: {},
                 cicles: [],
                 disciplines: []
@@ -119,6 +115,10 @@
         },
 
         computed: {
+            themeFetched() {
+                return Object.keys(this.theme).length !== 0;
+            },
+
             hasErrors() {
                 return Object.keys(this.errors).length !== 0;
             }

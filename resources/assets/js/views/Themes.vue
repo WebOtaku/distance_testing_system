@@ -25,7 +25,7 @@
 
                 </form>
 
-                <router-link tag="div" class="button is-link is-outlined block is-inline-block"
+                <router-link class="button is-link is-outlined block is-inline-block"
                              to="/workspace/themes/create" exact
                 >
                     Добавить
@@ -33,7 +33,7 @@
 
                 <template v-if="themes.length">
 
-                    <router-link tag="div" class="button is-link is-outlined block is-inline-block"
+                    <router-link class="button is-link is-outlined block is-inline-block"
                                  :to="`/workspace/themes/edit/${selectedTheme}`" exact
                     >
                         Редактировать

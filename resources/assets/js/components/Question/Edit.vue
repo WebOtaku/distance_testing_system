@@ -2,9 +2,14 @@
 
     <div class="create-question">
 
-        <section class="section">
+        <section class="section" v-if="questionFetched">
 
-            <h1 class="title">Добавление вопроса</h1>
+            <h1 class="title">Редактирование вопроса</h1>
+
+            <div class="notification is-primary" ref="notify" v-if="!hasErrors">
+                <button class="delete" @click="closeNotify"></button>
+                Вопрос был успешно обновлён
+            </div>
 
             <form method="POST" class="form">
 
@@ -13,7 +18,6 @@
 
                     <div class="select">
                         <select name="question_type_id" id="question_type_id"
-                                @input="changeQuestionType($event)"
                                 v-model="question.question_type_id" required
                         >
                             <option :value="1">Строгий</option>
@@ -22,7 +26,6 @@
                         </select>
                     </div>
                 </div>
-
 
                 <div class="field">
                     <label class="label" for="question">Текст вопроса</label>
@@ -46,18 +49,14 @@
                         </div>
                     </div>
 
-                    <div class="field answers" v-if="question.answers.length"
-                         v-for="(answer, index) in question.answers"
+                    <div class="field answers" v-if="question.answer_variants.length"
+                         v-for="(answer, index) in question.answer_variants"
                     >
 
                         <div class="control is-grouped answer">
                             <input type="radio" name="correct_answer"
-                                   v-if="question.question_type_id === 1 && index === 0"
-                                   @input="radioCheck(index)" checked required>
-
-                            <input type="radio" name="correct_answer"
-                                   v-else-if="question.question_type_id === 1"
-                                   @input="radioCheck(index)" required>
+                                   v-if="question.question_type_id === 1"
+                                   @input="radioCheck(index)" :checked="answer.correct_answer" required>
 
                             <input type="checkbox" name="correct_answer"
                                    v-if="question.question_type_id === 2"
@@ -85,7 +84,7 @@
                     <div class="field">
                         <div class="control">
                             <input type="text" class="input" name="answer_body"
-                                   v-model="question.answer" required>
+                                   v-model="question.answer_free.answer" required>
                         </div>
                     </div>
 
@@ -97,9 +96,9 @@
                 <div class="field is-grouped">
                     <div class="control">
                         <button type="submit" class="button is-primary"
-                                @click.prevent="addQuestion"
+                                @click.prevent="updateQuestion"
                         >
-                            Добавить
+                            Сохранить
                         </button>
                     </div>
 
@@ -121,40 +120,41 @@
 </template>
 
 <script>
-    import Question from '../models/Question';
+    import Question from '../../models/Question';
+    import AnswerVariant from '../../models/AnswerVariant';
 
     export default {
         data() {
             return {
-                question: {
-                    test_id: this.$route.params.testId,
-                    question_type_id: 1,
-                    question: '',
-                    answers: [
-                        {
-                            answer: '',
-                            correct_answer: true
-                        },
-                        {
-                            answer: '',
-                            correct_answer: false
-                        }
-                    ]
-                },
+                questionId: this.$route.params.questionId,
+                question: {},
                 errors: {}
             }
         },
 
+        computed: {
+            questionFetched() {
+                return Object.keys(this.question).length !== 0;
+            },
+
+            hasErrors() {
+                return Object.keys(this.errors).length !== 0;
+            }
+        },
+
         methods: {
-            addQuestion($event) {
+            updateQuestion($event) {
                 $event.target.disabled = true;
                 $event.target.classList.add('is-loading');
 
-                Question.store(this.question, data => {
+                Question.update(this.question, this.question.id, data => {
                     if (!data.errors) {
                         $event.target.disabled = false;
                         $event.target.classList.remove('is-loading');
-                        document.location.href = `/workspace/tests/edit/${this.question.test_id}`;
+                        this.$refs.notify.classList.add('is-active');
+                        setTimeout(() => {
+                            this.$refs.notify.classList.remove('is-active');
+                        }, 5000)
                     }
                     else {
                         this.errors = data.errors;
@@ -165,53 +165,80 @@
             },
 
             addAnswer() {
-                if (this.question.answers.length < 6) {
-                    this.question.answers.push({
+                if (this.question.answer_variants.length < 6) {
+                    this.question.answer_variants.push({
                         answer: '',
                         correct_answer: false
                     });
                 }
             },
 
-            changeQuestionType($event) {
-                let type = Number.parseInt($event.target.value);
-
-                this.errors = {};
-
-                if (type === 3) {
-                    delete this.question.answers;
-                    Vue.set(this.question, 'answer', '');
-                }
-                else {
-                    delete this.question.answer;
-
-                    Vue.set(this.question, 'answers', [
-                        {
-                            answer: '',
-                            correct_answer: true
-                        },
-                        {
-                            answer: '',
-                            correct_answer: false
-                        }
-                    ]);
-                }
-            },
-
             radioCheck(index) {
-                this.question.answers.forEach((x, i) => {
+                this.question.answer_variants.forEach((x, i) => {
                     x.correct_answer = i === index;
                 });
             },
 
             deleteAnswer(index) {
-                this.question.answers.splice(index, 1);
+                let answer = this.question.answer_variants.find(x => x.id === index);
+
+                if (!!answer) {
+                    AnswerVariant.destroy(answer.id, () => {
+                        this.question.answer_variants.splice(index, 1);
+                    });
+                }
+                else {
+                    this.question.answer_variants.splice(index, 1);
+                }
+            },
+
+            closeNotify() {
+                this.$refs.notify.classList.remove('is-active');
+            },
+
+            fetchQuestion() {
+                Question.fetch(this.questionId, question => {
+                    this.question = question;
+
+                    if (question.question_type_id !== 3) {
+                        Vue.set(this.question, 'answer_free', {
+                            answer: ''
+                        });
+                    }
+                    else {
+                        Vue.set(this.question, 'answer_variants', [
+                            {
+                                answer: '',
+                                correct_answer: true
+                            },
+                            {
+                                answer: '',
+                                correct_answer: false
+                            }
+                        ]);
+                    }
+                });
             }
+        },
+
+        created() {
+            this.fetchQuestion();
         }
     }
 </script>
 
 <style lang="scss">
+    .notification {
+        min-width: 200px;
+        width: 300px;
+        max-width: 400px;
+        display: none;
+    }
+
+    .notification.is-active {
+        display: block;
+    }
+
     .field .control textarea.textarea {
         min-width: 231px;
         width: 100%;

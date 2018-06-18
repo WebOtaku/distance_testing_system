@@ -47,11 +47,17 @@ Route::delete('/tests/{test}', 'TestController@destroy');
 
 
 /* START Question Routes */
-Route::get('/questions/{test}', 'QuestionController@show');
+Route::get('/questions', 'QuestionController@index');
+
+Route::get('/questions/{question}', 'QuestionController@show');
+
+Route::put('/questions/{question}', 'QuestionController@update');
 
 Route::post('/questions', 'QuestionController@store');
 
 Route::delete('/questions/{question}', 'QuestionController@destroy');
+
+Route::delete('/answer-variants/{answerVariant}', 'AnswerVariantController@destroy');
 /* END Question Routes*/
 
 
